@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 
-#include "../Enum/HoldType.h"
+#include "../Enum/ItemHoldType.h"
 
 #include "ItemHoldComponent.generated.h"
 

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "HoldType.generated.h"
+#include "ItemHoldType.generated.h"
 
 UENUM(BlueprintType)
 enum class EItemHoldType : uint8
@@ -14,7 +14,7 @@ enum class EItemHoldType : uint8
 };
 
 UCLASS()
-class MATRIX_API AHoldType : public AActor
+class MATRIX_API AItemHoldType : public AActor
 {
 	GENERATED_BODY()
 };

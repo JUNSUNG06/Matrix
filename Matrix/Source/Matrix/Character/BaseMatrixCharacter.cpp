@@ -35,3 +35,8 @@ FGameplayAbilitySpecHandle ABaseMatrixCharacter::GetAbilitySpecHandleByTag(FGame
 {
 	return AbilitySpecHandles[Tag];
 }
+
+UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()
+{
+	return ItemHold;
+}

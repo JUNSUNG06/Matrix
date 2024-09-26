@@ -7,12 +7,16 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayTags.h"
 #include "GameplayAbilitySpecHandle.h"
+
+#include "../Interface/ItemHoldInterface.h"
+
 #include "BaseMatrixCharacter.generated.h"
 /**
  * 
  */
 UCLASS()
-class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface
+class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface, 
+	public IItemHoldInterface
 {
 	GENERATED_BODY()
 	
@@ -38,6 +42,9 @@ protected:
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;
 
 	//ItemHold
+public:
+	virtual UItemHoldComponent* GetItemHoldComponent() override;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = ItemHold)
 	TObjectPtr<class UItemHoldComponent> ItemHold;

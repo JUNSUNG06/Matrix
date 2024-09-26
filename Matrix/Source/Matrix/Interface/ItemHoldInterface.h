@@ -4,14 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "ItemHoldInterface.generated.h"
 
-#include "../Enum/ItemHoldType.h"
-
-#include "Hold.generated.h"
+class UItemHoldComponent;
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
-class UHold : public UInterface
+UINTERFACE(MinimalAPI, BlueprintType)
+class UItemHoldInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -19,16 +18,11 @@ class UHold : public UInterface
 /**
  * 
  */
-class MATRIX_API IHold
+class MATRIX_API IItemHoldInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-public:
-	virtual void Hold() = 0;
-	virtual void UnHold() = 0;
-	virtual AActor* GetHoldActor() = 0;
-	virtual EItemHoldType GetHoldType() = 0;
-	virtual FTransform GetHoldOffsetTransform() = 0;
+	virtual UItemHoldComponent* GetItemHoldComponent() = 0;
 };

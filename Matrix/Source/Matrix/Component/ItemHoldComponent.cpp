@@ -3,7 +3,7 @@
 
 #include "Component/ItemHoldComponent.h"
 
-#include "../Enum/HoldType.h"
+#include "../Enum/ItemHoldType.h"
 #include "../Interface/Equipment.h"
 #include "../Interface/Hold.h"
 

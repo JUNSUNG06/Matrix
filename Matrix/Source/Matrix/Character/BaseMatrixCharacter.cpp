@@ -4,10 +4,13 @@
 #include "Character/BaseMatrixCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "../Component/ItemHoldComponent.h"
 
 ABaseMatrixCharacter::ABaseMatrixCharacter()
 {
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
+
+	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
 }
 
 void ABaseMatrixCharacter::BeginPlay()

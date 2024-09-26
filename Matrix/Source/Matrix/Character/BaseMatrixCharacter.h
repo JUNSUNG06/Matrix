@@ -22,6 +22,7 @@ public:
 public:
 	virtual void BeginPlay() override;
 
+	//GAS
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual FGameplayAbilitySpecHandle GetAbilitySpecHandleByTag(FGameplayTag Tag) override;
@@ -31,8 +32,13 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = GAS)
 	TMap<FGameplayTag, TSubclassOf<class UGameplayAbility>> Abilities;
 
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;
+
+	//ItemHold
+protected:
+	UPROPERTY(EditAnywhere, Category = ItemHold)
+	TObjectPtr<class UItemHoldComponent> ItemHold;
 };

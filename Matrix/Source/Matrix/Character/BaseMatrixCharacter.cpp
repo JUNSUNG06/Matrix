@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "../Component/ItemHoldComponent.h"
+#include "../Struct/Ability/AbilityInformation.h"
 
 ABaseMatrixCharacter::ABaseMatrixCharacter()
 {
@@ -18,11 +19,9 @@ void ABaseMatrixCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	ASC->InitAbilityActorInfo(this, this);
-	for (auto const Pair : Abilities)
+	for (FAbilityActivationInfo const Info : AbilityActivationInfos)
 	{
-		FGameplayAbilitySpec Spec(Pair.Value);
-		FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
-		AbilitySpecHandles.Add(Pair.Key, Handle);
+		AddAbility(Info);
 	}
 }
 
@@ -34,6 +33,22 @@ UAbilitySystemComponent* ABaseMatrixCharacter::GetAbilitySystemComponent() const
 FGameplayAbilitySpecHandle ABaseMatrixCharacter::GetAbilitySpecHandleByTag(FGameplayTag Tag)
 {
 	return AbilitySpecHandles[Tag];
+}
+
+void ABaseMatrixCharacter::AddAbility(FAbilityActivationInfo Info, int32 InputID)
+{
+	FGameplayAbilitySpec Spec(Info.GetAbility());
+	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
+	AbilitySpecHandles.Add(Info.GetTag(), Handle);
+}
+
+void ABaseMatrixCharacter::RemoveAbility(FAbilityActivationInfo Info)
+{
+	FGameplayAbilitySpecHandle Handle = GetAbilitySpecHandleByTag(Info.GetTag());
+	if (Handle.IsValid())
+	{
+		ASC->ClearAbility(Handle);
+	}
 }
 
 UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()

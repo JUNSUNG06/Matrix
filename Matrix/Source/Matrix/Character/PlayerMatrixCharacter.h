@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Character/BaseMatrixCharacter.h"
+#include "InputTriggers.h"
+
 #include "PlayerMatrixCharacter.generated.h"
 
 class USpringArmComponent;
@@ -28,11 +30,24 @@ protected:
 
 	virtual void BeginPlay();
 
+	//Ability
+public:
+	virtual void AddAbility(FAbilityActivationInfo Info, int32 InputID = -1) override;
+
+protected:
+	void StartInputAbility(int InputID);
+	void EndInputAbility(int InputID);
+
 protected:
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
 
+protected:
+	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
+	TArray<FAbilityActivationInfo> InputAbilityActivationInfos;
+
+	//Camera, Input
 protected:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -41,6 +56,8 @@ protected:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	UEnhancedInputComponent* InputCompo;
 
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))

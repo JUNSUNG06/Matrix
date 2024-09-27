@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "AbilitySystemComponent.h"
 
 APlayerMatrixCharacter::APlayerMatrixCharacter()
 {
@@ -36,18 +37,27 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		}
 	}
 
+	InputCompo = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-
+	if (InputCompo) 
+	{
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		InputCompo->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		InputCompo->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Move);
+		InputCompo->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Move);
 
 		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Look);
+		InputCompo->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Look);
+
+		for (int32 i = 0; i < InputAbilityActivationInfos.Num(); i++)
+		{
+			InputCompo->BindAction(InputAbilityActivationInfos[i].GetInputAction(), ETriggerEvent::Started,
+				this, &APlayerMatrixCharacter::StartInputAbility, i);
+			InputCompo->BindAction(InputAbilityActivationInfos[i].GetInputAction(), ETriggerEvent::Completed,
+				this, &APlayerMatrixCharacter::EndInputAbility, i);
+		}
 	}
 	else
 	{
@@ -58,8 +68,50 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void APlayerMatrixCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (int32 i = 0; i < InputAbilityActivationInfos.Num(); i++)
+	{
+		AddAbility(InputAbilityActivationInfos[i], i);
+	}
 }
 
+void APlayerMatrixCharacter::AddAbility(FAbilityActivationInfo Info, int32 InputID)
+{
+	FGameplayAbilitySpec Spec(Info.GetAbility());
+	Spec.InputID = InputID;
+	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
+	AbilitySpecHandles.Add(Info.GetTag(), Handle);
+}
+
+void APlayerMatrixCharacter::StartInputAbility(int InputID)
+{
+	FGameplayAbilitySpec* Spec = ASC->FindAbilitySpecFromInputID(InputID);
+	if (Spec)
+	{
+		Spec->InputPressed = true;
+		if (Spec->IsActive())
+		{
+			ASC->AbilitySpecInputPressed(*Spec);
+		}
+		else
+		{
+			ASC->TryActivateAbility(Spec->Handle);
+		}
+	}
+}
+
+void APlayerMatrixCharacter::EndInputAbility(int InputID)
+{
+	FGameplayAbilitySpec* Spec = ASC->FindAbilitySpecFromInputID(InputID);
+	if (Spec)
+	{
+		Spec->InputPressed = false;
+		if (Spec->IsActive())
+		{
+			ASC->AbilitySpecInputReleased(*Spec);
+		}
+	}
+}
 
 void APlayerMatrixCharacter::Move(const FInputActionValue& Value)
 {

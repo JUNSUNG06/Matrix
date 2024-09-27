@@ -9,6 +9,7 @@
 #include "GameplayAbilitySpecHandle.h"
 
 #include "../Interface/ItemHoldInterface.h"
+#include "../Struct/Ability/AbilityInformation.h"
 
 #include "BaseMatrixCharacter.generated.h"
 /**
@@ -31,13 +32,16 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual FGameplayAbilitySpecHandle GetAbilitySpecHandleByTag(FGameplayTag Tag) override;
 
+	virtual void AddAbility(FAbilityActivationInfo Info, int32 InputID = -1);
+	virtual void RemoveAbility(FAbilityActivationInfo Info);
+
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
-	TMap<FGameplayTag, TSubclassOf<class UGameplayAbility>> Abilities;
+	TArray<FAbilityActivationInfo> AbilityActivationInfos;
 
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;
 

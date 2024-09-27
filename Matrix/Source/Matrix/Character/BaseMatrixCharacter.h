@@ -36,7 +36,7 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = GAS)
+	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TMap<FGameplayTag, TSubclassOf<class UGameplayAbility>> Abilities;
 
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;

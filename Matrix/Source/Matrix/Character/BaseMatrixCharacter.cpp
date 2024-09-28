@@ -4,6 +4,7 @@
 #include "Character/BaseMatrixCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "../Component/ItemHoldComponent.h"
 #include "../Struct/Ability/AbilityInformation.h"
@@ -28,6 +29,8 @@ void ABaseMatrixCharacter::BeginPlay()
 	{
 		AttributeSet->InitMaxWalkSpeed(AttributeSetData->GetMaxWalkSpeed());
 		AttributeSet->InitMaxSprintSpeed(AttributeSetData->GetMaxSprintSpeed());
+
+		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
 	}
 
 	for (FAbilityActivationInfo const Info : AbilityActivationInfos)

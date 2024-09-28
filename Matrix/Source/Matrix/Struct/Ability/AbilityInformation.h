@@ -21,7 +21,7 @@ struct FAbilityActivationInfo
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (PrivateAccessAllow = true))
-	class UGameplayAbility* Ability;
+	TSubclassOf<class UGameplayAbility> Ability;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (PrivateAccessAllow = true))
 	class UInputAction* InputAction;
@@ -30,10 +30,10 @@ protected:
 	FGameplayTag Tag;
 
 public:
-	inline class UGameplayAbility* GetAbility() const { return Ability; }
+	inline class TSubclassOf<class UGameplayAbility> GetAbility() const { return Ability; }
 	inline class UInputAction* GetInputAction() const { return InputAction; }
 	inline FGameplayTag GetTag() const { return Tag; }
 
 public:
-	bool operator==(FAbilityActivationInfo& Left);
+	bool operator==(FAbilityActivationInfo& Right);
 };

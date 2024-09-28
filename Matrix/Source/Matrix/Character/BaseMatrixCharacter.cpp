@@ -4,12 +4,16 @@
 #include "Character/BaseMatrixCharacter.h"
 
 #include "AbilitySystemComponent.h"
+
 #include "../Component/ItemHoldComponent.h"
 #include "../Struct/Ability/AbilityInformation.h"
+#include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
+#include "../DataAsset/AttributeSet/MCAttributeSetDataAsset.h"
 
 ABaseMatrixCharacter::ABaseMatrixCharacter()
 {
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
+	AttributeSet = CreateDefaultSubobject<UMatrixCharacterAttributeSet>(TEXT("AttributeSet"));
 
 	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
 }
@@ -19,6 +23,13 @@ void ABaseMatrixCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	ASC->InitAbilityActorInfo(this, this);
+
+	if (AttributeSet && AttributeSetData)
+	{
+		AttributeSet->InitMaxWalkSpeed(AttributeSetData->GetMaxWalkSpeed());
+		AttributeSet->InitMaxSprintSpeed(AttributeSetData->GetMaxSprintSpeed());
+	}
+
 	for (FAbilityActivationInfo const Info : AbilityActivationInfos)
 	{
 		AddAbility(Info);

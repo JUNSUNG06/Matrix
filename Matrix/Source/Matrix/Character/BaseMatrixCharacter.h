@@ -43,7 +43,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TArray<FAbilityActivationInfo> AbilityActivationInfos;
 
+	UPROPERTY()
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;
+
+	UPROPERTY()
+	TObjectPtr<class UMatrixCharacterAttributeSet> AttributeSet;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (PrivateAccessAllow = true))
+	TObjectPtr<class UMCAttributeSetDataAsset> AttributeSetData;
 
 	//ItemHold
 public:

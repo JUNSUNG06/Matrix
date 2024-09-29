@@ -42,8 +42,8 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	if (InputCompo) 
 	{
 		// Jumping
-		InputCompo->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		InputCompo->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		//InputCompo->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		//InputCompo->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
 		InputCompo->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Move);

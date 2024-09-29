@@ -40,6 +40,10 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 protected:
+	UPROPERTY(EditAnywhere, Category = MotionWarping)
+	TObjectPtr<class UMotionWarpingComponent> MotionWarping;
+
+protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TArray<FAbilityActivationInfo> AbilityActivationInfos;
 

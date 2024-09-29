@@ -10,7 +10,19 @@ public class Matrix : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] { "Matrix" });
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", 
-			"InputCore", "EnhancedInput", "GameplayAbilities", "UMG", "GameplayTags", "GameplayTasks" });
+		PublicDependencyModuleNames.AddRange(new string[] 
+		{ 
+			"Core",
+			"CoreUObject",
+			"Engine",
+			"InputCore",
+			"EnhancedInput",
+			"GameplayAbilities",
+			"UMG", 
+			"GameplayTags", 
+			"GameplayTasks",
+            "AnimGraphRuntime",
+            "MotionWarping",
+        });
 	}
 }

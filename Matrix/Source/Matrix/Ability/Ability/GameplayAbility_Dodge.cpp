@@ -19,6 +19,7 @@ void UGameplayAbility_Dodge::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	FRotator Rotation;
 	APlayerMatrixCharacter* Player = Cast<APlayerMatrixCharacter>(OwnerInfo->AvatarActor);
 
+	//Calc direction
 	if (Character->GetCharacterMovement()->bOrientRotationToMovement)
 	{
 		if (Direction == FVector::ZeroVector)
@@ -36,16 +37,31 @@ void UGameplayAbility_Dodge::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 		{
 			Character->SetActorRotation(Direction.Rotation());
 		}
-
-		//Rotation = OwnerInfo->AvatarActor->GetActorRotation();
 	}
 	else
 	{
+		if (Direction == FVector::ZeroVector)
+		{
+			if (Player)
+			{
+				FRotator Rotate(0.0f,
+					Player->GetController()->GetControlRotation().Yaw, 0.0f);
+				Direction = Rotate.RotateVector(Character->GetActorForwardVector());
+			}
+			else
+			{
+				Direction = Character->GetActorForwardVector();
+			}
+		}
+		else
+		{
 
+		}
 	}
 
 	Rotation = OwnerInfo->AvatarActor->GetActorRotation();
 
+	//set motion warp point
 	UMotionWarpingComponent* WarpingComp = 
 		OwnerInfo->AvatarActor->GetComponentByClass<UMotionWarpingComponent>();
 	if (WarpingComp)
@@ -54,10 +70,12 @@ void UGameplayAbility_Dodge::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 		FMotionWarpingTarget Target = {};
 		Target.Name = WarpPointName;
 		Target.Location = DodgePoint;
+		Target.Rotation = Rotation;
 		WarpingComp->AddOrUpdateWarpTarget(Target);
 		DrawDebugLine(GetWorld(), OwnerInfo->AvatarActor->GetActorLocation(), DodgePoint, FColor::Blue, 1.0f);
 	}
 	
+	//choose animation
 	float Angle = UKismetAnimationLibrary::CalculateDirection(Direction, Rotation);
 	UE_LOG(LogTemp, Log, TEXT("%f"), Angle);
 	if (FMath::Abs(Angle) <= 45)

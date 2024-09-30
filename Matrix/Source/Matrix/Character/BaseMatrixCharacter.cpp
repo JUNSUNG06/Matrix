@@ -15,9 +15,14 @@
 ABaseMatrixCharacter::ABaseMatrixCharacter()
 {
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
+
 	AttributeSet = CreateDefaultSubobject<UMatrixCharacterAttributeSet>(TEXT("AttributeSet"));
+
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping"));
+
 	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
+	ItemHold->SetOwnerMesh(GetMesh());
+	
 }
 
 void ABaseMatrixCharacter::BeginPlay()

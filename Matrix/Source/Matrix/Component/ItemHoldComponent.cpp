@@ -29,7 +29,8 @@ void UItemHoldComponent::Equip(TScriptInterface<IEquipment> Equipment)
 		EAttachmentRule::SnapToTarget,
 		EAttachmentRule::KeepWorld,
 		true);
-	Equipment->GetEquipActor()->AttachToComponent(OwnerMesh, AttachmentRule, EquipSocket);
+	if (Equipment->GetEquipActor()->AttachToComponent(OwnerMesh, AttachmentRule, EquipSocket))
+		UE_LOG(LogTemp, Log, TEXT("success attach"));
 	Equipment->GetEquipActor()->AddActorLocalTransform(Equipment->GetEquipOffsetTransform());
 	CurrentEquipments[EquipSocket] = Equipment->GetEquipActor();
 	Equipment->Equipment();

@@ -12,6 +12,8 @@
 #include "InputActionValue.h"
 #include "AbilitySystemComponent.h"
 
+#include "../Component/ItemHoldComponent.h"
+
 APlayerMatrixCharacter::APlayerMatrixCharacter()
 {
 	// Create a camera boom (pulls in towards the player if there is a collision)
@@ -24,6 +26,8 @@ APlayerMatrixCharacter::APlayerMatrixCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
 }
 
 void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

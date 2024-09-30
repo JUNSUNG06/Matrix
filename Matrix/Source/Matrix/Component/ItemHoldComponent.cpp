@@ -31,7 +31,8 @@ void UItemHoldComponent::Equip(TScriptInterface<IEquipment> Equipment)
 		true);
 	if (Equipment->GetEquipActor()->AttachToComponent(OwnerMesh, AttachmentRule, EquipSocket))
 		UE_LOG(LogTemp, Log, TEXT("success attach"));
-	Equipment->GetEquipActor()->AddActorLocalTransform(Equipment->GetEquipOffsetTransform());
+	//Equipment->GetEquipActor()->AddActorLocalTransform(Equipment->GetEquipOffsetTransform());
+	Equipment->GetEquipActor()->SetActorRelativeTransform(Equipment->GetEquipOffsetTransform());
 	CurrentEquipments[EquipSocket] = Equipment->GetEquipActor();
 	Equipment->Equipment();
 
@@ -132,7 +133,8 @@ void UItemHoldComponent::Hold(TScriptInterface<IHold> HoldObject)
 		EAttachmentRule::KeepWorld,
 		true);
 	HoldActor->AttachToComponent(OwnerMesh, AttachmentRule, HoldSocket);
-	HoldObject->GetHoldActor()->AddActorLocalTransform(HoldObject->GetHoldOffsetTransform());
+	//HoldObject->GetHoldActor()->AddActorLocalTransform(HoldObject->GetHoldOffsetTransform());
+	HoldObject->GetHoldActor()->SetActorRelativeTransform(HoldObject->GetHoldOffsetTransform());
 	CurrentHoldObject = HoldObject;
 	CurrentHoldType = HoldObject->GetHoldType();
 	HoldObject->Hold();

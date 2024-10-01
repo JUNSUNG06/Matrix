@@ -32,8 +32,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual FGameplayAbilitySpecHandle GetAbilitySpecHandleByTag(FGameplayTag Tag) override;
 
-	virtual void AddAbility(FAbilityActivationInfo Info, int32 InputID = -1);
-	virtual void RemoveAbility(FAbilityActivationInfo Info);
+	virtual void AddAbility(const FAbilityActivationInfo& Info);
+	virtual void RemoveAbility(const FAbilityActivationInfo& Info);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS)
@@ -45,7 +45,10 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
-	TArray<FAbilityActivationInfo> AbilityActivationInfos;
+	TArray<FAbilityActivationInfo> StartAbilityActivationInfos;
+	
+	UPROPERTY(VisibleAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
+	TArray<FAbilityActivationInfo> CurrentAbilityActivationInfos;
 
 	UPROPERTY()
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;

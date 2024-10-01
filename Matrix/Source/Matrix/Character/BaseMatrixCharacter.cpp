@@ -39,7 +39,7 @@ void ABaseMatrixCharacter::BeginPlay()
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
 	}
 
-	for (FAbilityActivationInfo const Info : AbilityActivationInfos)
+	for (FAbilityActivationInfo const Info : StartAbilityActivationInfos)
 	{
 		AddAbility(Info);
 	}
@@ -55,20 +55,26 @@ FGameplayAbilitySpecHandle ABaseMatrixCharacter::GetAbilitySpecHandleByTag(FGame
 	return AbilitySpecHandles[Tag];
 }
 
-void ABaseMatrixCharacter::AddAbility(FAbilityActivationInfo Info, int32 InputID)
+void ABaseMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)
 {
+	CurrentAbilityActivationInfos.Add(Info);
 	FGameplayAbilitySpec Spec(Info.GetAbility());
 	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
 	AbilitySpecHandles.Add(Info.GetTag(), Handle);
 }
 
-void ABaseMatrixCharacter::RemoveAbility(FAbilityActivationInfo Info)
+void ABaseMatrixCharacter::RemoveAbility(const FAbilityActivationInfo& Info)
 {
+	int32 index = CurrentAbilityActivationInfos.Find(Info);
+	if (index == INDEX_NONE)
+		return;
+
+	CurrentAbilityActivationInfos.RemoveAt(index);
+
 	FGameplayAbilitySpecHandle Handle = GetAbilitySpecHandleByTag(Info.GetTag());
-	if (Handle.IsValid())
-	{
-		ASC->ClearAbility(Handle);
-	}
+	ASC->ClearAbility(Handle);
+
+	AbilitySpecHandles.Remove(Info.GetTag());
 }
 
 UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()

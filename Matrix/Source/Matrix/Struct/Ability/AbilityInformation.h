@@ -35,5 +35,6 @@ public:
 	inline FGameplayTag GetTag() const { return Tag; }
 
 public:
-	bool operator==(FAbilityActivationInfo& Right);
+	bool operator==(FAbilityActivationInfo& Other);
+	bool operator==(const FAbilityActivationInfo& Other) const;
 };

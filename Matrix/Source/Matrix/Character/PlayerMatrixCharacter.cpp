@@ -7,12 +7,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "AbilitySystemComponent.h"
 
 #include "../Component/ItemHoldComponent.h"
+#include "../Struct/Ability/AbilityInformation.h"
 
 APlayerMatrixCharacter::APlayerMatrixCharacter()
 {
@@ -55,14 +55,6 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		// Looking
 		InputCompo->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Look);
-
-		for (int32 i = 0; i < InputAbilityActivationInfos.Num(); i++)
-		{
-			InputCompo->BindAction(InputAbilityActivationInfos[i].GetInputAction(), ETriggerEvent::Started,
-				this, &APlayerMatrixCharacter::StartInputAbility, i);
-			InputCompo->BindAction(InputAbilityActivationInfos[i].GetInputAction(), ETriggerEvent::Completed,
-				this, &APlayerMatrixCharacter::EndInputAbility, i);
-		}
 	}
 	else
 	{
@@ -74,18 +66,65 @@ void APlayerMatrixCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (int32 i = 0; i < InputAbilityActivationInfos.Num(); i++)
+	for (int32 i = 0; i < StartInputAbilityActivationInfos.Num(); i++)
 	{
-		AddAbility(InputAbilityActivationInfos[i], i);
+		AddAbility(StartInputAbilityActivationInfos[i]);
 	}
 }
 
-void APlayerMatrixCharacter::AddAbility(FAbilityActivationInfo Info, int32 InputID)
+void APlayerMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)
 {
 	FGameplayAbilitySpec Spec(Info.GetAbility());
-	Spec.InputID = InputID;
+	if (Info.GetInputAction())
+	{
+		CurrentInputAbilityActivationInfos.Add(Info);
+		int32 index = CurrentInputAbilityActivationInfos.Num() - 1;
+		Spec.InputID = index;
+
+		TTuple<FInputBindingHandle, FInputBindingHandle> Tuple = MakeTuple(
+			Tuple.Key = InputCompo->BindAction(CurrentInputAbilityActivationInfos[index].GetInputAction(), ETriggerEvent::Started,
+				this, &APlayerMatrixCharacter::StartInputAbility, index), 
+			Tuple.Value = InputCompo->BindAction(CurrentInputAbilityActivationInfos[index].GetInputAction(), ETriggerEvent::Completed,
+				this, &APlayerMatrixCharacter::EndInputAbility, index));
+
+		InputBindingHandles.Add(Info.GetTag(), Tuple);
+	}
+	else
+	{
+		CurrentInputAbilityActivationInfos.Add(Info);
+	}
+
 	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
 	AbilitySpecHandles.Add(Info.GetTag(), Handle);
+}
+
+void APlayerMatrixCharacter::RemoveAbility(const FAbilityActivationInfo& Info)
+{
+	if (Info.GetInputAction())
+	{
+		int32 index = CurrentInputAbilityActivationInfos.Find(Info);
+		if (index == INDEX_NONE)
+			return;
+
+		InputCompo->RemoveBinding(InputBindingHandles[Info.GetTag()].Key);
+		InputCompo->RemoveBinding(InputBindingHandles[Info.GetTag()].Value);
+
+		InputBindingHandles.Remove(Info.GetTag());
+		CurrentInputAbilityActivationInfos.RemoveAt(index);
+	}
+	else
+	{
+		int32 index = CurrentAbilityActivationInfos.Find(Info);
+		if (index == INDEX_NONE)
+			return;
+
+		CurrentAbilityActivationInfos.RemoveAt(index);
+	}
+
+	FGameplayAbilitySpecHandle Handle = GetAbilitySpecHandleByTag(Info.GetTag());
+	ASC->ClearAbility(Handle);
+
+	AbilitySpecHandles.Remove(Info.GetTag());
 }
 
 void APlayerMatrixCharacter::StartInputAbility(int InputID)

@@ -26,7 +26,7 @@ class MATRIX_API IHold
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 public:
-	virtual void Hold() = 0;
+	virtual void Hold(AActor* Performer) = 0;
 	virtual void UnHold() = 0;
 	virtual AActor* GetHoldActor() = 0;
 	virtual EItemHoldType GetHoldType() = 0;

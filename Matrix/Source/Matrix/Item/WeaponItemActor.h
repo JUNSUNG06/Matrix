@@ -26,12 +26,12 @@ public:
 public:
 	virtual void Interact(AActor* interactor) override;
 
-	virtual void Hold() override;
+	virtual void Hold(AActor* Performer) override;
 	virtual void UnHold() override;
 	virtual AActor* GetHoldActor() override;
 	virtual EItemHoldType GetHoldType() override;
 
-	virtual void Equipment() override;
+	virtual void Equipment(AActor* Performer) override;
 	virtual void UnEquipment() override;
 	virtual AActor* GetEquipActor() override;
 

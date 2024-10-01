@@ -34,7 +34,7 @@ void UItemHoldComponent::Equip(TScriptInterface<IEquipment> Equipment)
 	//Equipment->GetEquipActor()->AddActorLocalTransform(Equipment->GetEquipOffsetTransform());
 	Equipment->GetEquipActor()->SetActorRelativeTransform(Equipment->GetEquipOffsetTransform());
 	CurrentEquipments[EquipSocket] = Equipment->GetEquipActor();
-	Equipment->Equipment();
+	Equipment->Equipment(GetOwner());
 
 	OnEquipItem.Broadcast(Equipment);
 }
@@ -52,7 +52,7 @@ void UItemHoldComponent::UnEquip(TScriptInterface<IEquipment> Equipment)
 		if (Pair.Value == Equipment->GetEquipActor())
 		{
 			Pair.Value = nullptr;
-			Equipment->Equipment();
+			Equipment->Equipment(GetOwner());
 
 			return;
 		}
@@ -137,7 +137,7 @@ void UItemHoldComponent::Hold(TScriptInterface<IHold> HoldObject)
 	HoldObject->GetHoldActor()->SetActorRelativeTransform(HoldObject->GetHoldOffsetTransform());
 	CurrentHoldObject = HoldObject;
 	CurrentHoldType = HoldObject->GetHoldType();
-	HoldObject->Hold();
+	HoldObject->Hold(GetOwner());
 
 	OnHoldItem.Broadcast(HoldObject);
 }

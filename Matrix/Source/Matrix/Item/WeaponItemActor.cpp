@@ -6,7 +6,7 @@
 #include "../Interface/ItemHoldInterface.h"
 #include "../Component/ItemHoldComponent.h"
 #include "../DataAsset/Item/WeaponItemDataAsset.h"
-
+#include "../Character/BaseMatrixCharacter.h"
 
 AWeaponItemActor::AWeaponItemActor()
 {
@@ -24,12 +24,32 @@ void AWeaponItemActor::Interact(AActor* interactor)
 	}
 }
 
-void AWeaponItemActor::Hold()
+void AWeaponItemActor::Hold(AActor* Performer)
 {
+	SetOwner(Performer);
+
+	ABaseMatrixCharacter* Character = Cast<ABaseMatrixCharacter>(OwnerActor);
+	if (!Character)
+		return;
+
+	TArray<FAbilityActivationInfo> AdditiveAbilities = GetData<UWeaponItemDataAsset>()->GetAdditiveAbility();
+	for (int i = 0; i < AdditiveAbilities.Num(); i++)
+	{
+		Character->AddAbility(AdditiveAbilities[i]);
+	}
 }
 
 void AWeaponItemActor::UnHold()
 {
+	ABaseMatrixCharacter* Character = Cast<ABaseMatrixCharacter>(OwnerActor);
+	if (!Character)
+		return;
+
+	TArray<FAbilityActivationInfo> AdditiveAbilities = GetData<UWeaponItemDataAsset>()->GetAdditiveAbility();
+	for (int i = 0; i < AdditiveAbilities.Num(); i++)
+	{
+		Character->RemoveAbility(AdditiveAbilities[i]);
+	}
 }
 
 AActor* AWeaponItemActor::GetHoldActor()
@@ -42,8 +62,10 @@ EItemHoldType AWeaponItemActor::GetHoldType()
 	return HoldType;
 }
 
-void AWeaponItemActor::Equipment()
+void AWeaponItemActor::Equipment(AActor* Performer)
 {
+	SetOwner(Performer);
+
 	SetActorEnableCollision(false);
 }
 

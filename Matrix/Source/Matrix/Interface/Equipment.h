@@ -22,7 +22,7 @@ class MATRIX_API IEquipment
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void Equipment() = 0;
+	virtual void Equipment(AActor* Performer) = 0;
 	virtual void UnEquipment() = 0;
 	virtual AActor* GetEquipActor() = 0;
 	virtual FTransform GetEquipOffsetTransform() = 0;

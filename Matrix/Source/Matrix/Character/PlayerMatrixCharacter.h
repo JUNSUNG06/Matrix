@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Character/BaseMatrixCharacter.h"
 #include "InputTriggers.h"
+#include "EnhancedInputComponent.h"
 
 #include "PlayerMatrixCharacter.generated.h"
 
@@ -32,7 +33,8 @@ protected:
 
 	//Ability
 public:
-	virtual void AddAbility(FAbilityActivationInfo Info, int32 InputID = -1) override;
+	virtual void AddAbility(const FAbilityActivationInfo& Info);
+	virtual void RemoveAbility(const FAbilityActivationInfo& Info);
 
 protected:
 	void StartInputAbility(int InputID);
@@ -43,9 +45,14 @@ protected:
 
 	void Look(const FInputActionValue& Value);
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
-	TArray<FAbilityActivationInfo> InputAbilityActivationInfos;
+	TArray<FAbilityActivationInfo> StartInputAbilityActivationInfos;
+
+	UPROPERTY(VisibleAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
+	TArray<FAbilityActivationInfo> CurrentInputAbilityActivationInfos;
+
+	TMap<FGameplayTag, TTuple<FInputBindingHandle, FInputBindingHandle>> InputBindingHandles;
 
 	//Camera, Input
 protected:

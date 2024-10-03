@@ -34,28 +34,24 @@ void UGameplayAbility_Parry::OnParry(IAbilitySystemInterface* TargetASC)
 
 void UGameplayAbility_Parry::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& Handle)
 {
-	UE_LOG(LogTemp, Log, TEXT("%d"), Handle.Num());
-
 	for (int i = 0; i < Handle.Num(); i++)
 	{
 		auto Data = Handle.Data[i];
 		AActor* DetectActor = Data->GetHitResult()->GetActor();
 		if (!DetectActor)
 			continue;
-		UE_LOG(LogTemp, Log, TEXT("%s"), *DetectActor->GetName());
+
 		IAbilitySystemInterface* Interface = Cast<IAbilitySystemInterface>(DetectActor);
 		if (!Interface)
 		{
 			continue;
 		}
-		UE_LOG(LogTemp, Log, TEXT("1"));
 
 		FGameplayAbilitySpecHandle Handle = Interface->GetAbilitySpecHandleByTag(CheckTag);
 		if (!Handle.IsValid())
 		{
 			continue;
 		}
-		UE_LOG(LogTemp, Log, TEXT("2"));
 
 		FGameplayAbilitySpec* Spec =
 			Interface->GetAbilitySystemComponent()->FindAbilitySpecFromHandle(Handle);
@@ -63,7 +59,6 @@ void UGameplayAbility_Parry::OnTraceResultCallback(const FGameplayAbilityTargetD
 		{
 			continue;
 		}
-		UE_LOG(LogTemp, Log, TEXT("3"));
 
 		if (Spec->IsActive())
 		{

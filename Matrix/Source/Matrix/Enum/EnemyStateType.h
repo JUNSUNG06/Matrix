@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ItemHoldType.generated.h"
+#include "EnemyStateType.generated.h"
 
 UENUM(BlueprintType)
-enum class EItemHoldType : uint8
+enum class EEnemyStateType : uint8
 {
-	UnHold UMETA(DisplayName = "UnHold"),
-	Sword UMETA(DisplayName = "Sword"),
+	Attack UMETA(DisplayName = "Attack"),
+	Stun UMETA(DisplayName = "Stun"),
 };
 
 UCLASS()
-class MATRIX_API AItemHoldType : public AActor
+class MATRIX_API AEnemyStateType : public AActor
 {
 	GENERATED_BODY()
 };

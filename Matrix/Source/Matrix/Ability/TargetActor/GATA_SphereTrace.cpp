@@ -46,7 +46,7 @@ FGameplayAbilityTargetDataHandle AGATA_SphereTrace::MakeTargetData() const
 	FGameplayAbilityTargetDataHandle DataHandle;
 	if (HitDetected)
 	{
-		for (FHitResult const Hit : HitResult)
+		for (const FHitResult Hit : HitResult)
 		{
 			FGameplayAbilityTargetData_SingleTargetHit* TargetData =
 				new FGameplayAbilityTargetData_SingleTargetHit(Hit);

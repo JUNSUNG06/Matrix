@@ -17,7 +17,7 @@ void UGameplayAbility_Guard::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-			this, TEXT("PlayAttack"), GuardMontage);
+			this, TEXT("PlayGuard"), GuardMontage, 1.0f, NAME_None, false);
 	
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor);
 	if (Character->GetCharacterMovement()->bOrientRotationToMovement)
@@ -26,7 +26,7 @@ void UGameplayAbility_Guard::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 			Character->GetController()->GetControlRotation().Yaw, 0.0f);
 		Character->SetActorRotation(Rotate);
 	}
-
+	
 	MontageTask->OnCompleted.AddDynamic(this, &UGameplayAbility_Guard::OnCompleteCallback);
 	MontageTask->OnInterrupted.AddDynamic(this, &UGameplayAbility_Guard::InterruptedCallback);
 	MontageTask->OnCancelled.AddDynamic(this, &UGameplayAbility_Guard::CanceledCallback);
@@ -35,9 +35,9 @@ void UGameplayAbility_Guard::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 
 void UGameplayAbility_Guard::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
-	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-
 	MontageJumpToSection(TEXT("End"));
+	
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UGameplayAbility_Guard::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
@@ -58,6 +58,7 @@ void UGameplayAbility_Guard::OnCompleteCallback()
 
 void UGameplayAbility_Guard::InterruptedCallback()
 {
+	MontageStop();
 	bool bReplicatedEndAbility = true;
 	bool bWasCancelled = true;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo,
@@ -66,6 +67,7 @@ void UGameplayAbility_Guard::InterruptedCallback()
 
 void UGameplayAbility_Guard::CanceledCallback()
 {
+	MontageStop();
 	bool bReplicatedEndAbility = true;
 	bool bWasCancelled = true;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo,

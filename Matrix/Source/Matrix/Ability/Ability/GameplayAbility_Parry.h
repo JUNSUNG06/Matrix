@@ -16,8 +16,21 @@ class MATRIX_API UGameplayAbility_Parry : public UGameplayAbility
 	
 public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
-	void OnParry(class IAbilitySystemInterface* TargetASC);
+	UFUNCTION(BlueprintNativeEvent)
+	void OnParry(const TScriptInterface<class IAbilitySystemInterface>& TargetASC);
+	virtual void OnParry_Implementation(const TScriptInterface<class IAbilitySystemInterface>& TargetASC);
+
+public:
+	UFUNCTION()
+	void OnCompleteCallback();
+
+	UFUNCTION()
+	void InterruptedCallback();
+
+	UFUNCTION()
+	void CanceledCallback();
 
 protected:
 	UFUNCTION()
@@ -35,4 +48,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	FGameplayTag StunTag;
 
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UAnimMontage> ParryMontage;
+
+	UPROPERTY()
+	class UAbilityTask_PlayMontageAndWait* MontageTask;
 };

@@ -97,7 +97,7 @@ void APlayerMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)
 	}
 	else
 	{
-		CurrentInputAbilityActivationInfos.Add(Info);
+		CurrentAbilityActivationInfos.Add(Info);
 	}
 
 	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);

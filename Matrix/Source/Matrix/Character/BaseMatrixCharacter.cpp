@@ -52,7 +52,10 @@ UAbilitySystemComponent* ABaseMatrixCharacter::GetAbilitySystemComponent() const
 
 FGameplayAbilitySpecHandle ABaseMatrixCharacter::GetAbilitySpecHandleByTag(FGameplayTag Tag)
 {
-	return AbilitySpecHandles[Tag];
+	if (AbilitySpecHandles.Contains(Tag))
+		return AbilitySpecHandles[Tag];
+	else
+		return FGameplayAbilitySpecHandle();
 }
 
 void ABaseMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)

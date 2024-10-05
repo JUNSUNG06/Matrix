@@ -22,7 +22,6 @@ ABaseMatrixCharacter::ABaseMatrixCharacter()
 
 	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
 	ItemHold->SetOwnerMesh(GetMesh());
-	
 }
 
 void ABaseMatrixCharacter::BeginPlay()
@@ -35,6 +34,7 @@ void ABaseMatrixCharacter::BeginPlay()
 	{
 		AttributeSet->InitMaxWalkSpeed(AttributeSetData->GetMaxWalkSpeed());
 		AttributeSet->InitMaxSprintSpeed(AttributeSetData->GetMaxSprintSpeed());
+		AttributeSet->InitHealth(100.0f);
 
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
 	}

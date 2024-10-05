@@ -4,7 +4,6 @@
 #include "Ability/Ability/GameplayAbility_Parry.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
-#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
@@ -12,13 +11,6 @@
 void UGameplayAbility_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
-
-	//MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-	//	this, TEXT("PlayParry"), ParryMontage, 1.0f, NAME_None, false);
-	////MontageTask->OnCompleted.AddDynamic(this, &UGameplayAbility_Parry::OnCompleteCallback);
-	////MontageTask->OnInterrupted.AddDynamic(this, &UGameplayAbility_Parry::InterruptedCallback);
-	////MontageTask->OnCancelled.AddDynamic(this, &UGameplayAbility_Parry::CanceledCallback);
-	//MontageTask->ReadyForActivation();
 
 	UGAAT_TraceTarget* TraceTask = UGAAT_TraceTarget::CreateTask(this,
 		AGATA_SphereTrace::StaticClass());
@@ -29,15 +21,11 @@ void UGameplayAbility_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 
 void UGameplayAbility_Parry::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
-	//MontageJumpToSection(TEXT("End"));
-	UE_LOG(LogTemp, Log, TEXT("End"));
-
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UGameplayAbility_Parry::OnParry_Implementation(const TScriptInterface<IAbilitySystemInterface>& TargetASC)
 {
-	UE_LOG(LogTemp, Log, TEXT("Parry"));
 	CurrentActorInfo->GetAnimInstance()->Montage_JumpToSection(TEXT("Guard"),
 		CurrentActorInfo->GetAnimInstance()->GetCurrentActiveMontage());
 
@@ -45,10 +33,6 @@ void UGameplayAbility_Parry::OnParry_Implementation(const TScriptInterface<IAbil
 	FGameplayAbilitySpecHandle Handle = TargetASC->GetAbilitySpecHandleByTag(StunTag);
 	if (Handle.IsValid())
 	{
-		//UE_LOG(LogTemp, Log, TEXT("Parry"));
-		//CurrentActorInfo->GetAnimInstance()->Montage_JumpToSection(TEXT("Guard"),
-		//	CurrentActorInfo->GetAnimInstance()->GetCurrentActiveMontage());
-
 		TargetASC->GetAbilitySystemComponent()->TryActivateAbility(Handle);
 	}
 }

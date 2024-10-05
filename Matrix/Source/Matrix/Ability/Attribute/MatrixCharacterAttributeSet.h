@@ -29,6 +29,8 @@ public:
 public:
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxWalkSpeed);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxSprintSpeed);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, Health);
 
 public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -37,9 +39,13 @@ public:
 		NewValue) override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, Category = "Move", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxWalkSpeed;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, Category = "Move", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxSprintSpeed;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData MaxHealth;
+	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData Health;
 };

@@ -11,6 +11,8 @@ UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
 
 void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
+	Super::PreAttributeChange(Attribute, NewValue);
+
 	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
@@ -19,6 +21,8 @@ void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& 
 
 void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
 	if (Attribute == GetHealthAttribute())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);

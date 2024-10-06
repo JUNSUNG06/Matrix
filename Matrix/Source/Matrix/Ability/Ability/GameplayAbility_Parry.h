@@ -18,9 +18,7 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
-	UFUNCTION(BlueprintNativeEvent)
-	void OnParry(const TScriptInterface<class IAbilitySystemInterface>& TargetASC);
-	virtual void OnParry_Implementation(const TScriptInterface<class IAbilitySystemInterface>& TargetASC);
+	void OnParry(const TScriptInterface<class IAbilitySystemInterface>& TargetASC, const FGameplayAbilityTargetDataHandle& TargetDataHandle, int index);
 
 public:
 	UFUNCTION()
@@ -54,4 +52,8 @@ protected:
 
 	UPROPERTY()
 	class UAbilityTask_PlayMontageAndWait* MontageTask;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> ParryEffect;
 };

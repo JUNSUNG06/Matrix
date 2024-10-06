@@ -10,6 +10,7 @@ UENUM(BlueprintType)
 enum class EEnemyStateType : uint8
 {
 	Attack UMETA(DisplayName = "Attack"),
+	Move UMETA(DisplayName = "Move"),
 	Stun UMETA(DisplayName = "Stun"),
 };
 

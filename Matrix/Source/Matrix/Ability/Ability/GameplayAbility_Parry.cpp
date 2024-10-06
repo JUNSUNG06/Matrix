@@ -4,6 +4,7 @@
 #include "Ability/Ability/GameplayAbility_Parry.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "Abilities/GameplayAbilityTargetTypes.h"
 
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
@@ -24,54 +25,27 @@ void UGameplayAbility_Parry::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
-void UGameplayAbility_Parry::OnParry_Implementation(const TScriptInterface<IAbilitySystemInterface>& TargetASC)
+void UGameplayAbility_Parry::OnParry(
+	const TScriptInterface<class IAbilitySystemInterface>& TargetASC,
+	const FGameplayAbilityTargetDataHandle& TargetDataHandle, int index)
 {
 	CurrentActorInfo->GetAnimInstance()->Montage_JumpToSection(TEXT("Guard"),
 		CurrentActorInfo->GetAnimInstance()->GetCurrentActiveMontage());
 
 
-	FGameplayAbilitySpecHandle Handle = TargetASC->GetAbilitySpecHandleByTag(StunTag);
-	if (Handle.IsValid())
+	FGameplayAbilitySpecHandle AbilityHandle = TargetASC->GetAbilitySpecHandleByTag(StunTag);
+	if (AbilityHandle.IsValid())
 	{
-		TargetASC->GetAbilitySystemComponent()->TryActivateAbility(Handle);
-	}
-}
-
-void UGameplayAbility_Parry::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& Handle)
-{
-	for (int i = 0; i < Handle.Num(); i++)
-	{
-		auto Data = Handle.Data[i];
-		AActor* DetectActor = Data->GetHitResult()->GetActor();
-		if (!DetectActor)
-			continue;
-
-		const TScriptInterface<IAbilitySystemInterface> Interface = DetectActor;
-		if (!Interface)
-		{
-			continue;
-		}
-
-		FGameplayAbilitySpecHandle Handle = Interface->GetAbilitySpecHandleByTag(CheckTag);
-		if (!Handle.IsValid())
-		{
-			continue;
-		}
-
-		FGameplayAbilitySpec* Spec =
-			Interface->GetAbilitySystemComponent()->FindAbilitySpecFromHandle(Handle);
-		if (!Spec)
-		{
-			continue;
-		}
-
-		if (Spec->IsActive())
-		{
-			OnParry_Implementation(Interface);
-		}
+		TargetASC->GetAbilitySystemComponent()->TryActivateAbility(AbilityHandle);
 	}
 
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	FGameplayEffectSpecHandle EffectHandle =
+		MakeOutgoingGameplayEffectSpec(ParryEffect);
+	if (EffectHandle.IsValid())
+	{
+		ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo,
+			CurrentActivationInfo, EffectHandle, TargetDataHandle);
+	}
 }
 
 void UGameplayAbility_Parry::OnCompleteCallback()
@@ -96,4 +70,41 @@ void UGameplayAbility_Parry::CanceledCallback()
 	bool bWasCancelled = true;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo,
 		bReplicatedEndAbility, bWasCancelled);
+}
+
+void UGameplayAbility_Parry::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& Handle)
+{
+	for (int i = 0; i < Handle.Num(); i++)
+	{
+		auto Data = Handle.Data[i];
+		AActor* DetectActor = Data->GetHitResult()->GetActor();
+		if (!DetectActor)
+			continue;
+
+		const TScriptInterface<IAbilitySystemInterface> Interface = DetectActor;
+		if (!Interface)
+		{
+			continue;
+		}
+
+		FGameplayAbilitySpecHandle AbilityHandle = Interface->GetAbilitySpecHandleByTag(CheckTag);
+		if (!AbilityHandle.IsValid())
+		{
+			continue;
+		}
+
+		FGameplayAbilitySpec* Spec =
+			Interface->GetAbilitySystemComponent()->FindAbilitySpecFromHandle(AbilityHandle);
+		if (!Spec)
+		{
+			continue;
+		}
+
+		if (Spec->IsActive())
+		{
+			OnParry(Interface, Handle, i);
+		}
+	}
+
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }

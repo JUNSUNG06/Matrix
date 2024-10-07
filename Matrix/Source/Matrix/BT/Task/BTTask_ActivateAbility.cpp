@@ -52,6 +52,7 @@ EBTNodeResult::Type UBTTask_ActivateAbility::ExecuteTask(UBehaviorTreeComponent&
 			}
 		}
 	);
+
 	CurrentASC->TryActivateAbility(SpecHandle);
 
 	return EBTNodeResult::Type::InProgress;

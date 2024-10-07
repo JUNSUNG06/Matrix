@@ -46,12 +46,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	FGameplayTag StunTag;
 
+public:
+	UPROPERTY(EditAnywhere)
+	float KnockBackDistance;
+
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UAnimMontage> ParryMontage;
-
-	UPROPERTY()
-	class UAbilityTask_PlayMontageAndWait* MontageTask;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "GAS")

@@ -21,7 +21,7 @@ public:
 	UGAAT_TraceTarget();
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks", meta = (DisplayName =
+	UFUNCTION(BlueprintCallable, Category = "AbilityTasks", meta = (DisplayName =
 		"WaitForTrace", HidePin = "OwningAbility", DefaultToSelf = "OwningAbility",
 		BlueprintInternalUseOnly = "TRUE"))
 	static UGAAT_TraceTarget* CreateTask(UGameplayAbility* OwningAbility, 

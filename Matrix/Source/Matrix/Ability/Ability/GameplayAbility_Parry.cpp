@@ -5,9 +5,11 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "Abilities/GameplayAbilityTargetTypes.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
+#include "../AbilityTask/AbilityTask_SetMotionWarp.h"
 
 void UGameplayAbility_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -29,9 +31,9 @@ void UGameplayAbility_Parry::OnParry(
 	const TScriptInterface<class IAbilitySystemInterface>& TargetASC,
 	const FGameplayAbilityTargetDataHandle& TargetDataHandle, int index)
 {
-	CurrentActorInfo->GetAnimInstance()->Montage_JumpToSection(TEXT("Guard"),
-		CurrentActorInfo->GetAnimInstance()->GetCurrentActiveMontage());
-
+	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+		this, TEXT("Parry"), ParryMontage, 1.0f, NAME_None, false);
+	MontageTask->ReadyForActivation();
 
 	FGameplayAbilitySpecHandle AbilityHandle = TargetASC->GetAbilitySpecHandleByTag(StunTag);
 	if (AbilityHandle.IsValid())
@@ -46,6 +48,16 @@ void UGameplayAbility_Parry::OnParry(
 		ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo,
 			CurrentActivationInfo, EffectHandle, TargetDataHandle);
 	}
+
+	const AActor* Attacker = TargetDataHandle.Data[index]->GetHitResult()->GetActor();
+	const FVector KnockBackDir = (CurrentActorInfo->AvatarActor->GetActorLocation() -
+		Attacker->GetActorLocation()).GetSafeNormal();
+	const FVector KnockBackLocation = KnockBackDir * KnockBackDistance + 
+		CurrentActorInfo->AvatarActor->GetActorLocation();
+	UAbilityTask_SetMotionWarp* MotionWarpTask =
+		UAbilityTask_SetMotionWarp::CreateTask(this, TEXT("KnockBackPoint"),
+			KnockBackLocation, FRotator::ZeroRotator);
+	MotionWarpTask->ReadyForActivation();
 }
 
 void UGameplayAbility_Parry::OnCompleteCallback()

@@ -37,6 +37,8 @@ void ABaseMatrixCharacter::BeginPlay()
 		AttributeSet->InitHealth(100.0f);
 
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
+
+		AttributeSet->OnOverStunWeight.AddDynamic(this, &ABaseMatrixCharacter::Stun);
 	}
 
 	for (FAbilityActivationInfo const Info : StartAbilityActivationInfos)
@@ -83,4 +85,9 @@ void ABaseMatrixCharacter::RemoveAbility(const FAbilityActivationInfo& Info)
 UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()
 {
 	return ItemHold;
+}
+
+void ABaseMatrixCharacter::Stun()
+{
+	
 }

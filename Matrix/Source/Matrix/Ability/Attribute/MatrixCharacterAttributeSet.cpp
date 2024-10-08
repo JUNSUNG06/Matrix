@@ -35,6 +35,12 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 
 void UMatrixCharacterAttributeSet::SetStunWeightValue(float& Value)
 {
+	if (OnOverStunWeight.IsBound())
+	{
+		UE_LOG(LogTemp, Log, TEXT("bound"));
+
+	}
+
 	if (Value >= GetMaxStunWeight())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Over stun weight"));

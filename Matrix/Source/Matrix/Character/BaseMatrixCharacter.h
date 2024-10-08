@@ -73,4 +73,9 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* Target;
+
+	//Attribute Observe Func
+public:
+	UFUNCTION()
+	virtual void Stun();
 };

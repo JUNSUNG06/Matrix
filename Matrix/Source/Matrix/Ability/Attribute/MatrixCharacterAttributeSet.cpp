@@ -7,6 +7,7 @@ UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
 	MaxHealth(100.0f)
 {
 	InitHealth(GetMaxHealth());
+	InitMaxStunWeight(100.0f);
 }
 
 void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

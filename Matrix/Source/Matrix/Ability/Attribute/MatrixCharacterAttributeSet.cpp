@@ -17,6 +17,10 @@ void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& 
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
 	}
+	if (Attribute == GetStunWeightAttribute())
+	{
+		SetStunWeightValue(NewValue);
+	}
 }
 
 void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
@@ -26,5 +30,15 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	if (Attribute == GetHealthAttribute())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);
+	}
+}
+
+void UMatrixCharacterAttributeSet::SetStunWeightValue(float& Value)
+{
+	if (Value >= GetMaxStunWeight())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Over stun weight"));
+		OnOverStunWeight.Broadcast();
+		Value = 0;
 	}
 }

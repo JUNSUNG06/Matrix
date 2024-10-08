@@ -45,3 +45,21 @@ void AMatrixCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 }
+
+void AMatrixCharacter::Freeze(float Time)
+{
+	CustomTimeDilation = 0.0f;
+
+	GetWorld()->GetTimerManager().SetTimer(
+		FreezeTimer,
+		this,
+		&AMatrixCharacter::EndFreeze,
+		Time);
+}
+
+void AMatrixCharacter::EndFreeze()
+{
+	CustomTimeDilation = 1.0f;
+
+	FreezeTimer.Invalidate();
+}

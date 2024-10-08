@@ -19,5 +19,14 @@ public:
 
 protected:
 	virtual void BeginPlay();
+
+public:
+	void Freeze(float Time);
+
+private:
+	void EndFreeze();
+
+private:
+	FTimerHandle FreezeTimer;
 };
 

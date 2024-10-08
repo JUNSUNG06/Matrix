@@ -3,6 +3,7 @@
 
 #include "Animation/AnimNotify/AnimNotify_SetAttackWarpTarget.h"
 #include "MotionWarpingComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "../../Character/BaseMatrixCharacter.h"
 
@@ -34,6 +35,8 @@ void UAnimNotify_SetAttackWarpTarget::Notify(USkeletalMeshComponent* MeshComp, U
 			FMotionWarpingTarget Target = {};
 			Target.Name = TargetName;
 			Target.Location = TargetLocation;
+			Target.Rotation = UKismetMathLibrary::FindLookAtRotation(
+				OwnerActor->GetActorLocation(), TargetActor->GetActorLocation());
 			MC->GetMotionWarping()->AddOrUpdateWarpTarget(Target);
 			
 			DrawDebugSphere(GetWorld(), TargetLocation, 25.0f, 12, FColor::Green);

@@ -43,6 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = MotionWarping)
 	TObjectPtr<class UMotionWarpingComponent> MotionWarping;
 
+public:
+	FORCEINLINE UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
+
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TArray<FAbilityActivationInfo> StartAbilityActivationInfos;
@@ -66,4 +69,8 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category = ItemHold)
 	TObjectPtr<class UItemHoldComponent> ItemHold;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* Target;
 };

@@ -5,6 +5,7 @@
 
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
+#include "../../Character/BaseMatrixCharacter.h"
 
 UGameplayAbility_FindTarget::UGameplayAbility_FindTarget()
 {
@@ -16,12 +17,12 @@ void UGameplayAbility_FindTarget::ActivateAbility(const FGameplayAbilitySpecHand
 	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 
 	UGAAT_TraceTarget* TraceTask = UGAAT_TraceTarget::CreateTask(this, AGATA_SphereTrace::StaticClass());
-	TraceTask->OnComplete.AddDynamic(this, &UGameplayAbility_FindTarget::Find);
+	TraceTask->OnComplete.AddDynamic(this, &UGameplayAbility_FindTarget::Find_Implementation);
 	TraceTask->SetTraceData(FindRange, FindRadius);
 	TraceTask->ReadyForActivation();
 }
 
 void UGameplayAbility_FindTarget::Find_Implementation(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
 {
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	Find(TargetDataHandle);
 }

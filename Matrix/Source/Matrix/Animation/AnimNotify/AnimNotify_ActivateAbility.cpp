@@ -24,4 +24,6 @@ void UAnimNotify_ActivateAbility::Notify(USkeletalMeshComponent* MeshComp, UAnim
 			}
 		}
 	}
+	
+	//MotionWarp AnimNortify ±¸Çö
 }

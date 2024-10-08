@@ -23,6 +23,7 @@ public:
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Find(const FGameplayAbilityTargetDataHandle& TargetDataHandle);
+	UFUNCTION()
 	virtual void Find_Implementation(const FGameplayAbilityTargetDataHandle& TargetDataHandle);
 
 public:

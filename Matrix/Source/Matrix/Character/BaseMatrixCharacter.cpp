@@ -87,6 +87,21 @@ UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()
 	return ItemHold;
 }
 
+FVector ABaseMatrixCharacter::GetLockOnTransform_Implementation() const
+{
+	return GetActorLocation();
+}
+
+AActor* ABaseMatrixCharacter::GetLockOnActor_Implementation()
+{
+	return this;
+}
+
+bool ABaseMatrixCharacter::CanLockOn_Implementation()
+{
+	return true;
+}
+
 void ABaseMatrixCharacter::Stun()
 {
 	

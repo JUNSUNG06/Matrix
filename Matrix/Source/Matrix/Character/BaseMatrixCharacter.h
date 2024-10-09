@@ -10,6 +10,7 @@
 
 #include "../Interface/ItemHoldInterface.h"
 #include "../Struct/Ability/AbilityInformation.h"
+#include "../Interface/LockOnTarget.h"
 
 #include "BaseMatrixCharacter.generated.h"
 /**
@@ -17,7 +18,7 @@
  */
 UCLASS()
 class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface, 
-	public IItemHoldInterface
+	public IItemHoldInterface, public ILockOnTarget
 {
 	GENERATED_BODY()
 	
@@ -69,6 +70,15 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category = ItemHold)
 	TObjectPtr<class UItemHoldComponent> ItemHold;
+
+	//LockOn
+public:
+	UFUNCTION(BlueprintCallable)
+	virtual FVector GetLockOnTransform_Implementation() const override;
+	UFUNCTION(BlueprintCallable)
+	virtual AActor* GetLockOnActor_Implementation() override;
+	UFUNCTION(BlueprintCallable)
+	virtual bool CanLockOn_Implementation() override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

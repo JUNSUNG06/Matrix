@@ -31,7 +31,7 @@ public:
 	virtual void OnEndLockOn_Implementation();
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float  LockOnRadius;
 
 private:

@@ -43,8 +43,6 @@ void UGameplayAbility_LockOn::SetTarget_Implementation(const TScriptInterface<cl
 
 void UGameplayAbility_LockOn::OnEndLockOn_Implementation()
 {
-	UE_LOG(LogTemp, Log, TEXT("end lockon"));
-
 	bIsLockOn = false;
 
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
@@ -66,9 +64,9 @@ void UGameplayAbility_LockOn::OnCompleteTrace(const FGameplayAbilityTargetDataHa
 		if (LockOnTarget->CanLockOn_Implementation() == false)
 			continue;
 
-		UE_LOG(LogTemp, Log, TEXT("find lockon target"));
 		SetTarget_Implementation(LockOnTarget);
-		
-		break;
+		return;
 	}
+
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }

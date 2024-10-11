@@ -37,8 +37,6 @@ void ABaseMatrixCharacter::BeginPlay()
 		AttributeSet->InitHealth(100.0f);
 
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
-
-		AttributeSet->OnOverStunWeight.AddDynamic(this, &ABaseMatrixCharacter::Stun);
 	}
 
 	for (FAbilityActivationInfo const Info : StartAbilityActivationInfos)
@@ -100,9 +98,4 @@ AActor* ABaseMatrixCharacter::GetLockOnActor_Implementation()
 bool ABaseMatrixCharacter::CanLockOn_Implementation()
 {
 	return true;
-}
-
-void ABaseMatrixCharacter::Stun()
-{
-	
 }

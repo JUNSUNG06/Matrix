@@ -25,7 +25,7 @@ class MATRIX_API APlayerMatrixCharacter : public ABaseMatrixCharacter
 
 public:
 	APlayerMatrixCharacter();
-
+	
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

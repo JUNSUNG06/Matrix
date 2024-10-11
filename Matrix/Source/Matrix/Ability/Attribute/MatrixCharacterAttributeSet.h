@@ -41,6 +41,9 @@ public:
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float
 		NewValue) override;
 
+	virtual bool PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Move", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxWalkSpeed;
@@ -59,7 +62,4 @@ protected:
 
 public:
 	FOverStunWeight OnOverStunWeight;
-
-private:
-	void SetStunWeightValue(float& Value);
 };

@@ -13,9 +13,6 @@ UCLASS()
 class MATRIX_API AEnemyMatrixCharacter : public ABaseMatrixCharacter
 {
 	GENERATED_BODY()
-	
-public:
-	virtual void Stun() override;
 
 public:
 	UPROPERTY(EditAnywhere, Category = BT)

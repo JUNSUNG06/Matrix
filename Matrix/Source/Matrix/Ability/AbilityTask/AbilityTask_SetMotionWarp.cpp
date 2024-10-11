@@ -27,4 +27,6 @@ void UAbilityTask_SetMotionWarp::Activate()
 		
 		DrawDebugSphere(GetWorld(), WarpTarget.Location, 25.0f, 12, FColor::Green);
 	}
+
+	EndTask();
 }

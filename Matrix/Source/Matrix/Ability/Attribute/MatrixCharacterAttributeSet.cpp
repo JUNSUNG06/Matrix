@@ -2,6 +2,8 @@
 
 
 #include "Ability/Attribute/MatrixCharacterAttributeSet.h"
+#include "GameplayEffectExtension.h"
+#include "../../Tag/MatrixTag.h"
 
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
 	MaxHealth(100.0f)
@@ -18,10 +20,6 @@ void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& 
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
 	}
-	if (Attribute == GetStunWeightAttribute())
-	{
-		SetStunWeightValue(NewValue);
-	}
 }
 
 void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
@@ -34,18 +32,26 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	}
 }
 
-void UMatrixCharacterAttributeSet::SetStunWeightValue(float& Value)
+bool UMatrixCharacterAttributeSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data)
 {
-	if (OnOverStunWeight.IsBound())
-	{
-		UE_LOG(LogTemp, Log, TEXT("bound"));
+	if (!Super::PreGameplayEffectExecute(Data))
+		return false; 
 
-	}
+	return true;
+}
 
-	if (Value >= GetMaxStunWeight())
+void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetStunWeightAttribute())
 	{
-		UE_LOG(LogTemp, Log, TEXT("Over stun weight"));
-		OnOverStunWeight.Broadcast();
-		Value = 0;
+		if (GetStunWeight() >= GetMaxStunWeight())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Over stun weight"));
+			Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_STARTSTUN));
+			OnOverStunWeight.Broadcast();
+			SetStunWeight(0.0f);
+		}
 	}
 }

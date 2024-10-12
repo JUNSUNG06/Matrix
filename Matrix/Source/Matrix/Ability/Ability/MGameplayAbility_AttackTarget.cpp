@@ -34,6 +34,6 @@ void UMGameplayAbility_AttackTarget::ActivateAbility(const FGameplayAbilitySpecH
 		ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo,
 			CurrentActivationInfo, EffectHandle, DataHandle);
 	}
-
+		
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }

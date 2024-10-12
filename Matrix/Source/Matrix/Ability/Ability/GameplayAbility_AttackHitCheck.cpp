@@ -19,7 +19,6 @@ void UGameplayAbility_AttackHitCheck::ActivateAbility(const FGameplayAbilitySpec
 	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 
 	Level = TriggerEventData->EventMagnitude;
-	UE_LOG(LogTemp, Log, TEXT("attack hit check"));
 
 	UGAAT_TraceTarget* TraceTask = UGAAT_TraceTarget::CreateTask(this,
 		AGATA_SphereTrace::StaticClass());

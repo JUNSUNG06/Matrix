@@ -31,7 +31,7 @@ bool UGameplayAbility_Katana_Attack::CanActivateAbility(const FGameplayAbilitySp
 void UGameplayAbility_Katana_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
+
 	UGAAT_TraceTarget* TraceTask = UGAAT_TraceTarget::CreateTask(this, AGATA_SphereTrace::StaticClass());
 	TraceTask->SetTraceData(CheckEnemyRange, CheckEnemyRadius);
 	TraceTask->OnComplete.AddDynamic(this, &UGameplayAbility_Katana_Attack::CompleteTraceTask);

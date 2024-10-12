@@ -13,14 +13,16 @@ void UAN_ActivateAbilityWithData::Notify(USkeletalMeshComponent* MeshComp, UAnim
 	if (MeshComp)
 	{
 		AActor* OwnerActor = MeshComp->GetOwner();
-		
+		TScriptInterface<IAbilitySystemInterface> ASI = OwnerActor;
+		if (!ASI)
+			return;
+		UAbilitySystemComponent* ASC = ASI->GetAbilitySystemComponent();
+
 		FGameplayEventData Payload = {};
 		Payload.OptionalObject = Object_1;
 		Payload.OptionalObject2 = Object_2;
 		Payload.EventMagnitude = Magnitude;
 
-		TScriptInterface<IAbilitySystemInterface> ASI = OwnerActor;
-		UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerActor);
 		ASC->TriggerAbilityFromGameplayEvent(
 			ASI->GetAbilitySpecHandleByTag(TargetAbilityTag),
 			ASI->GetAbilitySystemComponent()->AbilityActorInfo.Get(),

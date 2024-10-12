@@ -33,4 +33,7 @@ protected:
 	float TraceRange;
 	UPROPERTY(EditAnywhere, Category = "Trace")
 	float TraceRadius;
+
+private:
+	float Level;
 };

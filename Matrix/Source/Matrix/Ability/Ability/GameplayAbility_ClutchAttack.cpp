@@ -16,6 +16,8 @@ bool UGameplayAbility_ClutchAttack::CanActivateAbility(const FGameplayAbilitySpe
 	ABaseMatrixCharacter* BMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
 	if (!BMC)
 		return false;
+	if (!BMC->Target)
+		return false;
 
 	return true;
 }
@@ -25,25 +27,17 @@ void UGameplayAbility_ClutchAttack::ActivateAbility(const FGameplayAbilitySpecHa
 	ABaseMatrixCharacter* BMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
 	AActor* TargetActor = BMC->Target;
 	TScriptInterface<IAbilitySystemInterface> TargetASI = TargetActor;
-	//if(TargetASI->GetAbilitySystemComponent()->GetOwnedGameplayTags().HasTag(StartClutchTag))
-	//	UE_LOG(LogTemp, Log, TEXT("can activate start clutch"));
 
 	FGameplayEventData Payload;
 	Payload.Instigator = GetAvatarActorFromActorInfo();
 	Payload.OptionalObject = ClutchedAnimMontage;
-	auto a = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	auto TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	TargetASI->GetAbilitySystemComponent()->TriggerAbilityFromGameplayEvent(
 		TargetASI->GetAbilitySpecHandleByTag(StartClutchTag),
 		TargetASI->GetAbilitySystemComponent()->AbilityActorInfo.Get(),
 		StartClutchTag,
 		&Payload,
-		*a);
-	
-	/*UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		TargetActor,
-		StartClutchTag,
-		Payload
-	);*/
+		*TargetASC);
 
 	FVector AttackLocation = TargetActor->GetActorLocation() +
 		TargetActor->GetActorForwardVector() * StartClutchAttackDistance;

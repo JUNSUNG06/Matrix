@@ -6,10 +6,12 @@
 #include "../../Tag/MatrixTag.h"
 
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
-	MaxHealth(100.0f)
+	MaxHealth(100.0f),
+	MaxHealthCount(2.0f)
 {
 	InitHealth(GetMaxHealth());
 	InitMaxStunWeight(100.0f);
+	InitHealthCount(GetMaxHealthCount());
 }
 
 void UMatrixCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -44,11 +46,25 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	if (Data.EvaluatedData.Attribute == GetStunWeightAttribute())
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		if (GetHealth() <= 0.0f)
+		{
+			SetHealth(GetMaxHealth());
+			SetHealthCount(GetHealthCount() - 1);
+
+			if (GetHealthCount() <= 0.0f)
+			{
+				UE_LOG(LogTemp, Log, TEXT("Die"));
+				Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_DIE));
+				OnDie.Broadcast();
+			}
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetStunWeightAttribute())
 	{
 		if (GetStunWeight() >= GetMaxStunWeight())
 		{
-			UE_LOG(LogTemp, Log, TEXT("Over stun weight"));
 			Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_STARTSTUN));
 			OnOverStunWeight.Broadcast();
 			SetStunWeight(0.0f);

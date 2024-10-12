@@ -40,6 +40,7 @@ void UGameplayAbility_Katana_Attack::ActivateAbility(const FGameplayAbilitySpecH
 
 void UGameplayAbility_Katana_Attack::CompleteTraceTask(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
 {
+	//clutch attack
 	for (int i = 0; i < TargetDataHandle.Data.Num(); i++)
 	{
 		TSharedPtr<FGameplayAbilityTargetData> Target = TargetDataHandle.Data[i];
@@ -72,13 +73,12 @@ void UGameplayAbility_Katana_Attack::CompleteTraceTask(const FGameplayAbilityTar
 		return;
 	}
 
-	//combo attact
-	UAbilityTask_ActivateAbilityByTag* ComboAttackTask = UAbilityTask_ActivateAbilityByTag::CreateTask(
-		this,
-		GetAvatarActorFromActorInfo(),
-		ComboAttackTag
-	);
-	ComboAttackTask->ReadyForActivation();
+	TScriptInterface<IAbilitySystemInterface> OwnerASI = GetAvatarActorFromActorInfo();
+	FGameplayAbilitySpecHandle AbilityHandle = OwnerASI->GetAbilitySpecHandleByTag(ComboAttackTag);
+	if (AbilityHandle.IsValid())
+	{
+		OwnerASI->GetAbilitySystemComponent()->TryActivateAbility(AbilityHandle);
+	}
 
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }

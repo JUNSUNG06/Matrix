@@ -17,11 +17,8 @@ void UGameplayAbility_ComboAttack::ActivateAbility(const FGameplayAbilitySpecHan
 
 void UGameplayAbility_ComboAttack::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
-	UE_LOG(LogTemp, Log, TEXT("Input Pressed"));
-
 	if (ComboCheckTimerHandle.IsValid())
 	{
-		UE_LOG(LogTemp, Log, TEXT("Set Next Attack"));
 		SetNextAttack();
 	}
 }

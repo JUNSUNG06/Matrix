@@ -16,6 +16,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverStunWeight);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
+
 /**
  * 
  */
@@ -32,6 +34,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxSprintSpeed);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxHealth);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, Health);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxHealthCount);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, HealthCount);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxStunWeight);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, StunWeight);
 
@@ -54,6 +58,10 @@ protected:
 	FGameplayAttributeData MaxHealth;
 	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
+	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData MaxHealthCount;
+	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData HealthCount;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Stun", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxStunWeight;
@@ -62,4 +70,5 @@ protected:
 
 public:
 	FOverStunWeight OnOverStunWeight;
+	FOnDie OnDie;
 };

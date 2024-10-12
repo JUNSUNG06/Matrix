@@ -19,13 +19,6 @@ void UAN_ActivateAbilityWithData::Notify(USkeletalMeshComponent* MeshComp, UAnim
 		Payload.OptionalObject2 = Object_2;
 		Payload.EventMagnitude = Magnitude;
 
-		//UE_LOG(LogTemp, Log, TEXT("send gameplay event"));
-		//UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		//	OwnerActor,
-		//	TargetAbilityTag,
-		//	Payload
-		//);
-
 		TScriptInterface<IAbilitySystemInterface> ASI = OwnerActor;
 		UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerActor);
 		ASC->TriggerAbilityFromGameplayEvent(
@@ -34,6 +27,5 @@ void UAN_ActivateAbilityWithData::Notify(USkeletalMeshComponent* MeshComp, UAnim
 			TargetAbilityTag,
 			&Payload,
 			*ASC);
-
 	}
 }

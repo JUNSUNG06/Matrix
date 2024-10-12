@@ -28,6 +28,8 @@ void UGameplayAbility_ComboAttack::EndAbility(const FGameplayAbilitySpecHandle H
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
 	CurrentComboCount = 0;
+	bIsSetNextCombo = false;
+	ComboCheckTimerHandle.Invalidate();
 }
 
 void UGameplayAbility_ComboAttack::StartAttack()

@@ -15,6 +15,13 @@ class MATRIX_API AEnemyMatrixCharacter : public ABaseMatrixCharacter
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
+
+protected:
+	UFUNCTION()
+	void OnDamaged(float Value);
+
+public:
 	UPROPERTY(EditAnywhere, Category = BT)
-	FName StatePropertyName;
+	FName RecentDamageAmountName;
 };

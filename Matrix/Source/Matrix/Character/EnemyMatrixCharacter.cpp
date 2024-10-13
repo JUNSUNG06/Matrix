@@ -2,3 +2,27 @@
 
 
 #include "Character/EnemyMatrixCharacter.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
+#include "AIController.h"
+
+#include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
+
+void AEnemyMatrixCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (AttributeSet)
+	{
+		AttributeSet->OnDamaged.AddDynamic(this, &AEnemyMatrixCharacter::OnDamaged);
+	}
+}
+
+void AEnemyMatrixCharacter::OnDamaged(float Value)
+{
+	AAIController* AI = Cast<AAIController>(GetController());
+	UBlackboardComponent* Blackboard = AI->GetBlackboardComponent();
+	float RecentDamageAmount = Blackboard->GetValueAsFloat(RecentDamageAmountName);
+	Blackboard->SetValueAsFloat(RecentDamageAmountName, RecentDamageAmount + Value);
+}

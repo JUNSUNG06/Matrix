@@ -17,6 +17,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverStunWeight);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged, float, DamageAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, PrevHealth, float, NewHealth);
 
 /**
  * 
@@ -38,6 +40,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, HealthCount);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxStunWeight);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, StunWeight);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, Damage);
 
 public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -68,7 +71,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Stun", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData StunWeight;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Damage", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData Damage;
+
+
 public:
 	FOverStunWeight OnOverStunWeight;
 	FOnDie OnDie;
+	FOnDamaged OnDamaged;
+	FOnHealthChanged OnHealthChanged;
+
+private:
+	void SetHealthValue(float Value, const FGameplayEffectModCallbackData& Data);
 };

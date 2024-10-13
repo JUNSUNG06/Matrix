@@ -7,7 +7,8 @@
 
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
 	MaxHealth(100.0f),
-	MaxHealthCount(2.0f)
+	MaxHealthCount(2.0f),
+	Damage(0.0f)
 {
 	InitHealth(GetMaxHealth());
 	InitMaxStunWeight(100.0f);
@@ -31,6 +32,7 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	if (Attribute == GetHealthAttribute())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);
+		OnHealthChanged.Broadcast(OldValue, NewValue);
 	}
 }
 
@@ -68,6 +70,35 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 			Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_STARTSTUN));
 			OnOverStunWeight.Broadcast();
 			SetStunWeight(0.0f);
+		}
+	}
+	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Damaged"));
+		SetHealthValue(
+			FMath::Clamp(GetHealth() - Data.EvaluatedData.Magnitude, 0.0f, GetMaxHealth()),
+			Data);
+		OnDamaged.Broadcast(Data.EvaluatedData.Magnitude);
+		SetDamage(0.0f);
+	}
+}
+
+void UMatrixCharacterAttributeSet::SetHealthValue(float Value, const FGameplayEffectModCallbackData& Data)
+{
+	float PrevValue = GetHealth();
+
+	SetHealth(Value);
+
+	if (GetHealth() <= 0.0f)
+	{
+		SetHealth(GetMaxHealth());
+		SetHealthCount(GetHealthCount() - 1);
+
+		if (GetHealthCount() <= 0.0f)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Die"));
+			Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_DIE));
+			OnDie.Broadcast();
 		}
 	}
 }

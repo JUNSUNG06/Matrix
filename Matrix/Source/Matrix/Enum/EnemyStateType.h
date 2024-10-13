@@ -13,6 +13,7 @@ enum class EEnemyStateType : uint8
 	Move UMETA(DisplayName = "Move"),
 	Stun UMETA(DisplayName = "Stun"),
 	Clutched UMETA(DisplayName = "Clutched"),
+	Retreat UMETA(DisplayName = "Retreat"),
 	Die UMETA(DisplayName = "Die"),
 };
 

@@ -5,6 +5,11 @@
 #include "Tasks/AITask_RunEQS.h"
 #include "AIController.h"
 
+UGameplayAbility_EQSAbility::UGameplayAbility_EQSAbility()
+{
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+}
+
 bool UGameplayAbility_EQSAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, OUT FGameplayTagContainer* OptionalRelevantTags) const
 {
 	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
@@ -28,11 +33,11 @@ void UGameplayAbility_EQSAbility::ActivateAbility(const FGameplayAbilitySpecHand
 
 	UAITask_RunEQS* EQSTask = UAITask_RunEQS::RunEQS(AI, Query);
 	FQueryFinishedSignature InNotificationDelegate;
-	InNotificationDelegate.BindUObject(this, &UGameplayAbility_EQSAbility::OnComplete);
+	InNotificationDelegate.BindUObject(this, &UGameplayAbility_EQSAbility::OnCompleteQuery);
 	EQSTask->SetNotificationDelegate(InNotificationDelegate);
 	EQSTask->ReadyForActivation();
 }
 
-void UGameplayAbility_EQSAbility::OnComplete(TSharedPtr<FEnvQueryResult> Result)
+void UGameplayAbility_EQSAbility::OnCompleteQuery(TSharedPtr<FEnvQueryResult> Result)
 {
 }

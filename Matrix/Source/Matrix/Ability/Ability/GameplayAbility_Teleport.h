@@ -14,4 +14,18 @@ class MATRIX_API UGameplayAbility_Teleport : public UGameplayAbility_EQSAbility
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void OnCompleteQuery(TSharedPtr<struct FEnvQueryResult> Result) override;
+
+protected:
+	virtual void StartTeleport();
+	virtual void CompleteTeleport();
+
+protected:
+	UPROPERTY(EditAnywhere)
+	float TeleportTime;
+
+	FTimerHandle TeleportTimerHandle;
+
+	FVector TeleportPoint;
 };

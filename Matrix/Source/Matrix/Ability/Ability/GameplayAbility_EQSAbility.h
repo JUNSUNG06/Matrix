@@ -15,6 +15,9 @@ class MATRIX_API UGameplayAbility_EQSAbility : public UGameplayAbility
 	GENERATED_BODY()
 
 public:
+	UGameplayAbility_EQSAbility();
+
+public:
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, OUT FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
@@ -23,5 +26,5 @@ protected:
 	TObjectPtr<class UEnvQuery> Query;
 
 protected:
-	void OnComplete(TSharedPtr<struct FEnvQueryResult> Result);
+	virtual void OnCompleteQuery(TSharedPtr<struct FEnvQueryResult> Result);
 };

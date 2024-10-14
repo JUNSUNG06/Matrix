@@ -20,16 +20,26 @@ void UGameplayAbility_Teleport::OnCompleteQuery(TSharedPtr<FEnvQueryResult> Resu
 	);
 }
 
-void UGameplayAbility_Teleport::StartTeleport()
+void UGameplayAbility_Teleport::StartTeleport_Implementation()
 {
 	GetAvatarActorFromActorInfo()->CustomTimeDilation = 0.0f;
 	GetAvatarActorFromActorInfo()->SetActorHiddenInGame(true);
 }
 
-void UGameplayAbility_Teleport::CompleteTeleport()
+void UGameplayAbility_Teleport::CompleteTeleport_Implementation()
 {
 	GetAvatarActorFromActorInfo()->SetActorLocation(TeleportPoint);
 
+	GetWorld()->GetTimerManager().SetTimer(
+		CompleteDelayTimerHandle,
+		this,
+		&UGameplayAbility_Teleport::CompleteTeleportDelayed,
+		CompleteDelayTime
+	);
+}
+
+void UGameplayAbility_Teleport::CompleteTeleportDelayed_Implementation()
+{
 	GetAvatarActorFromActorInfo()->CustomTimeDilation = 1.0f;
 	GetAvatarActorFromActorInfo()->SetActorHiddenInGame(false);
 

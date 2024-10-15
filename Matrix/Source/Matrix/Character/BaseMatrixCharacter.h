@@ -41,7 +41,7 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = MotionWarping)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = MotionWarping)
 	TObjectPtr<class UMotionWarpingComponent> MotionWarping;
 
 public:

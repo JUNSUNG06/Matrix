@@ -18,7 +18,9 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	void RunAI();
+	UFUNCTION(BlueprintCallable)
 	void StopAI();
 
 public:

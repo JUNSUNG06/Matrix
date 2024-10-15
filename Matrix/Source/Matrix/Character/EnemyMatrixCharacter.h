@@ -17,6 +17,10 @@ class MATRIX_API AEnemyMatrixCharacter : public ABaseMatrixCharacter
 public:
 	virtual void BeginPlay() override;
 
+public:
+	UFUNCTION(BlueprintCallable)
+	class AMatrixAIController* GetMatrixAI();
+
 protected:
 	UFUNCTION()
 	void OnDamaged(float Value);

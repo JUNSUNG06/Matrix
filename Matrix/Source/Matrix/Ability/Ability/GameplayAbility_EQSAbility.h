@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "EnvironmentQuery/EnvQueryTypes.h"
 #include "GameplayAbility_EQSAbility.generated.h"
 
 /**
@@ -26,5 +27,5 @@ protected:
 	TObjectPtr<class UEnvQuery> Query;
 
 protected:
-	virtual void OnCompleteQuery(TSharedPtr<struct FEnvQueryResult> Result);
+	virtual void OnCompleteQuery(TSharedPtr<FEnvQueryResult> Result);
 };

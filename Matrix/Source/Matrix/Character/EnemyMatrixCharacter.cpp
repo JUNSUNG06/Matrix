@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "AIController.h"
 
+#include "../Controller/MatrixAIController.h"
 #include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
 
 void AEnemyMatrixCharacter::BeginPlay()
@@ -17,6 +18,11 @@ void AEnemyMatrixCharacter::BeginPlay()
 	{
 		AttributeSet->OnDamaged.AddDynamic(this, &AEnemyMatrixCharacter::OnDamaged);
 	}
+}
+
+AMatrixAIController* AEnemyMatrixCharacter::GetMatrixAI()
+{
+	return Cast<AMatrixAIController>(GetController());
 }
 
 void AEnemyMatrixCharacter::OnDamaged(float Value)

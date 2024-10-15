@@ -39,7 +39,7 @@ void ABaseMatrixCharacter::BeginPlay()
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
 	}
 
-	for (FAbilityActivationInfo const Info : StartAbilityActivationInfos)
+	for (const FAbilityActivationInfo Info : StartAbilityActivationInfos)
 	{
 		AddAbility(Info);
 	}

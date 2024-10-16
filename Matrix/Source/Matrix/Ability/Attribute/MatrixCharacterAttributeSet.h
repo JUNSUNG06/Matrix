@@ -18,7 +18,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverStunWeight);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged, float, DamageAmount);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, PrevHealth, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, PrevHealth, float, NewHealth, float, MaxHealth);
 
 /**
  * 

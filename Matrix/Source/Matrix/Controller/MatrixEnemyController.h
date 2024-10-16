@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
-#include "MatrixPlayerController.generated.h"
+#include "Controller/MatrixAIController.h"
+#include "MatrixEnemyController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MATRIX_API AMatrixPlayerController : public APlayerController
+class MATRIX_API AMatrixEnemyController : public AMatrixAIController
 {
 	GENERATED_BODY()
 
@@ -19,8 +19,8 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
+	TSubclassOf<class UEnemyWidget> EnemyWidgetClass;
 
 	UPROPERTY()
-	class UPlayerWidget* PlayerWidget;
+	class UEnemyWidget* EnemyWidget;
 };

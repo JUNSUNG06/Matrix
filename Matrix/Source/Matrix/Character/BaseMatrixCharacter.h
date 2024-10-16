@@ -63,6 +63,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (PrivateAccessAllow = true))
 	TObjectPtr<class UMCAttributeSetDataAsset> AttributeSetData;
 
+public:
+	class UMatrixCharacterAttributeSet* GetAttributeSet() { return AttributeSet; }
+
 	//ItemHold
 public:
 	virtual UItemHoldComponent* GetItemHoldComponent() override;

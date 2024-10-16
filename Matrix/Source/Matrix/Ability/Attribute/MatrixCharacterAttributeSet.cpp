@@ -32,7 +32,7 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	if (Attribute == GetHealthAttribute())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);
-		OnHealthChanged.Broadcast(OldValue, NewValue);
+		OnHealthChanged.Broadcast(OldValue, NewValue, GetMaxHealth());
 	}
 }
 

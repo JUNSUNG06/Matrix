@@ -34,6 +34,14 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);
 		OnHealthChanged.Broadcast(OldValue, NewValue, GetMaxHealth());
 	}
+	else if (Attribute == GetStunWeightAttribute())
+	{
+		OnStunWeightChanged.Broadcast(OldValue, NewValue, GetMaxStunWeight());
+	}
+	else if (Attribute == GetHealthCountAttribute())
+	{
+		OnHealthCountChanged.Broadcast(OldValue, NewValue, GetMaxHealthCount());
+	}
 }
 
 bool UMatrixCharacterAttributeSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data)

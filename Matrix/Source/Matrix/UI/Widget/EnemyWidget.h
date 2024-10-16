@@ -18,13 +18,27 @@ public:
 	virtual void SetOwnerActor(AActor* NewOwnerActor) override;
 
 	void SetHealthPercent(float Value, bool Immediately = false);
+	void SetStunWeightPercent(float Value);
+	void SetHealthCount(int Count);
+	void UseHealthCount();
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UMatrixProgressBar* PB_Health;
 
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UTwoSideProgressBar* TSPB_StunWeight;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UHealthCountContainer* C_HealthCount;
+
 protected:
 	UFUNCTION()
 	void OnHealthChange(float Prev, float New, float Max);
 
+	UFUNCTION()
+	void OnStunWeightChange(float Prev, float New, float Max);
+
+	UFUNCTION()
+	void OnHealthCountChange(float Prev, float New, float Max);
 };

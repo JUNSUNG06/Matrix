@@ -13,6 +13,7 @@ void AMatrixEnemyController::BeginPlay()
 	EnemyWidget = CreateWidget<UEnemyWidget>(GetWorld(), EnemyWidgetClass);
 	EnemyWidget->SetOwnerActor(this);
 	EnemyWidget->SetHealthPercent(1.0f, true);
+	EnemyWidget->SetStunWeightPercent(0.0f);
 	AMatrixHUD* HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AMatrixHUD>();
 	if (HUD)
 	{

@@ -19,6 +19,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverStunWeight);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged, float, DamageAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, PrevHealth, float, NewHealth, float, MaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStunWeightChanged, float, PrevStunWeight, float, NewStunWeight, float, MaxStunWeight);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthCountChanged, float, PrevCount, float, NewCount, float, MaxCount);
 
 /**
  * 
@@ -80,6 +82,8 @@ public:
 	FOnDie OnDie;
 	FOnDamaged OnDamaged;
 	FOnHealthChanged OnHealthChanged;
+	FOnStunWeightChanged OnStunWeightChanged;
+	FOnHealthCountChanged OnHealthCountChanged;
 
 private:
 	void SetHealthValue(float Value, const FGameplayEffectModCallbackData& Data);

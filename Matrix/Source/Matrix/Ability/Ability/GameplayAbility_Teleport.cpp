@@ -8,7 +8,18 @@ void UGameplayAbility_Teleport::OnCompleteQuery(TSharedPtr<FEnvQueryResult> Resu
 {
 	Super::OnCompleteQuery(Result);
 	
-	TeleportPoint = Result->GetItemAsLocation(0);
+	TArray<FVector> ResultPoint;
+	Result->GetAllAsLocations(ResultPoint);
+
+	if (bRandom)
+	{
+		TeleportPoint = Result->GetItemAsLocation(FMath::RandRange(0, ResultPoint.Num() - 1));
+
+	}
+	else
+	{
+		TeleportPoint = ResultPoint[0];
+	}
 
 	StartTeleport();
 

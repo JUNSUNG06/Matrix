@@ -41,6 +41,11 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	else if (Attribute == GetHealthCountAttribute())
 	{
 		OnHealthCountChanged.Broadcast(OldValue, NewValue, GetMaxHealthCount());
+
+		if (NewValue > 0)
+		{
+			SetHealth(GetMaxHealth());
+		}
 	}
 }
 
@@ -60,7 +65,6 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 	{
 		if (GetHealth() <= 0.0f)
 		{
-			SetHealth(GetMaxHealth());
 			SetHealthCount(GetHealthCount() - 1);
 
 			if (GetHealthCount() <= 0.0f)
@@ -99,7 +103,6 @@ void UMatrixCharacterAttributeSet::SetHealthValue(float Value, const FGameplayEf
 
 	if (GetHealth() <= 0.0f)
 	{
-		SetHealth(GetMaxHealth());
 		SetHealthCount(GetHealthCount() - 1);
 
 		if (GetHealthCount() <= 0.0f)

@@ -74,8 +74,8 @@ void APlayerMatrixCharacter::BeginPlay()
 
 void APlayerMatrixCharacter::PossessedBy(AController* NewController)
 {
-	APlayerController* PlayerController = CastChecked<APlayerController>(NewController);
-	PlayerController->ConsoleCommand(TEXT("showdebug abilitysystem"));
+	//APlayerController* PlayerController = CastChecked<APlayerController>(NewController);
+	//PlayerController->ConsoleCommand(TEXT("showdebug abilitysystem"));
 }
 
 void APlayerMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)

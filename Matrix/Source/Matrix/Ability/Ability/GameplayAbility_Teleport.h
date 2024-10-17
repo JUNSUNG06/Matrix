@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float CompleteDelayTime;
 
+	UPROPERTY(EditAnywhere)
+	bool bRandom;
+
 	UPROPERTY(BlueprintReadWrite)
 	FVector TeleportPoint;
 	

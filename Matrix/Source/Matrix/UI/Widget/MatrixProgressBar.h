@@ -15,6 +15,9 @@ class MATRIX_API UMatrixProgressBar : public UMatrixUserWidget
 	GENERATED_BODY()
 
 public:
+	UMatrixProgressBar();
+
+public:
 	void SetPercent(float Value, bool Immediately = false);
 	
 protected:
@@ -24,10 +27,16 @@ protected:
 	class UProgressBar* PB_Top;
 
 protected:
+	void StartFollow();
 	void Follow();
 
 protected:
 	UPROPERTY(EditAnywhere)
 	float FollowTime;
 	FTimerHandle FollowTimerHandle;
+
+	UPROPERTY(EditAnywhere)
+	float FollowSpeed;
+
+	FTimerHandle FollowHandle;
 };

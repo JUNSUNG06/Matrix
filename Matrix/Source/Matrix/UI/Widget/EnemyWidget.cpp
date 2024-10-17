@@ -9,6 +9,13 @@
 #include "TwoSideProgressBar.h"
 #include "HealthCountContainer.h"
 
+void UEnemyWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	UE_LOG(LogTemp, Log, TEXT("init widget"));
+	TSPB_StunWeight->SetVisibility(ESlateVisibility::Collapsed);
+}
+
 void UEnemyWidget::SetOwnerActor(AActor* NewOwnerActor)
 {
 	Super::SetOwnerActor(NewOwnerActor);

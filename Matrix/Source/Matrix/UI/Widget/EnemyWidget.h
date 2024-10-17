@@ -14,6 +14,9 @@ class MATRIX_API UEnemyWidget : public UActorUserWidget
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void NativeConstruct() override;
+
 public:
 	virtual void SetOwnerActor(AActor* NewOwnerActor) override;
 

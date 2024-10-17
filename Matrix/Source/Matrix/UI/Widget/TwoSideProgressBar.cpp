@@ -6,6 +6,13 @@
 
 void UTwoSideProgressBar::SetPercent(float Value)
 {
-	PB_Left->SetPercent(Value);
-	PB_Right->SetPercent(Value);
+	Percent = Value;
+
+	PB_Left->SetPercent(Percent);
+	PB_Right->SetPercent(Percent);
+}
+
+float UTwoSideProgressBar::GetPercent()
+{
+	return Percent;
 }

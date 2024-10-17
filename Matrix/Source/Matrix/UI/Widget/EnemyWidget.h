@@ -41,4 +41,7 @@ protected:
 
 	UFUNCTION()
 	void OnHealthCountChange(float Prev, float New, float Max);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDie();
 };

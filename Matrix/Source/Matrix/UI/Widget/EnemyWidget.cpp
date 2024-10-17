@@ -26,6 +26,7 @@ void UEnemyWidget::SetOwnerActor(AActor* NewOwnerActor)
 	Attribute->OnHealthChanged.AddDynamic(this, &UEnemyWidget::OnHealthChange);
 	Attribute->OnStunWeightChanged.AddDynamic(this, &UEnemyWidget::OnStunWeightChange);
 	Attribute->OnHealthCountChanged.AddDynamic(this, &UEnemyWidget::OnHealthCountChange);
+	Attribute->OnDie.AddDynamic(this, &UEnemyWidget::OnDie);
 
 	SetHealthCount(Attribute->GetMaxHealthCount());
 }
@@ -58,6 +59,16 @@ void UEnemyWidget::OnHealthChange(float Prev, float New, float Max)
 void UEnemyWidget::OnStunWeightChange(float Prev, float New, float Max)
 {
 	TSPB_StunWeight->SetPercent(New / Max);
+
+	if (TSPB_StunWeight->GetPercent() <= 0.0f)
+	{
+		TSPB_StunWeight->SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else
+	{
+		TSPB_StunWeight->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+
+	}
 }
 
 void UEnemyWidget::OnHealthCountChange(float Prev, float New, float Max)

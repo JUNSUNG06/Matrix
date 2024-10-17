@@ -16,11 +16,14 @@ class MATRIX_API UTwoSideProgressBar : public UMatrixUserWidget
 	
 public:
 	void SetPercent(float Value);
+	float GetPercent();
 
 protected:
+	UPROPERTY(EditAnywhere)
+	float Percent;
+
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UProgressBar* PB_Left;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UProgressBar* PB_Right;
-
 };

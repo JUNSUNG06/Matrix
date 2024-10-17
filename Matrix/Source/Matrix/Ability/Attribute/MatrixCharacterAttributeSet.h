@@ -42,6 +42,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, HealthCount);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, MaxStunWeight);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, StunWeight);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, StunWeightDescAmount);
+	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, StunWeightDescDelay);
 	ATTRIBUTE_ACCESSORS(UMatrixCharacterAttributeSet, Damage);
 
 public:
@@ -52,6 +54,10 @@ public:
 
 	virtual bool PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+protected:
+	virtual void StartDescStunWeight();
+	virtual void DescStunWeight();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Move", Meta = (AllowPrivateAccess = true))
@@ -72,6 +78,10 @@ protected:
 	FGameplayAttributeData MaxStunWeight;
 	UPROPERTY(BlueprintReadOnly, Category = "Stun", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData StunWeight;
+	UPROPERTY(BlueprintReadOnly, Category = "Stun", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData StunWeightDescAmount;
+	UPROPERTY(BlueprintReadOnly, Category = "Stun", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData StunWeightDescDelay;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Damage", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData Damage;
@@ -84,6 +94,10 @@ public:
 	FOnHealthChanged OnHealthChanged;
 	FOnStunWeightChanged OnStunWeightChanged;
 	FOnHealthCountChanged OnHealthCountChanged;
+	
+private:
+	FTimerHandle StunWeightDescDelayTimer;
+	FTimerHandle StunWeightDescTimer;
 
 private:
 	void SetHealthValue(float Value, const FGameplayEffectModCallbackData& Data);

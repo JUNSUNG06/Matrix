@@ -8,7 +8,9 @@
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
 	MaxHealth(100.0f),
 	MaxHealthCount(2.0f),
-	Damage(0.0f)
+	Damage(0.0f),
+	StunWeightDescAmount(30.0f),
+	StunWeightDescDelay(3.0f)
 {
 	InitHealth(GetMaxHealth());
 	InitMaxStunWeight(100.0f);
@@ -37,6 +39,19 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 	else if (Attribute == GetStunWeightAttribute())
 	{
 		OnStunWeightChanged.Broadcast(OldValue, NewValue, GetMaxStunWeight());
+
+		if (NewValue >= OldValue)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(StunWeightDescDelayTimer);
+			GetWorld()->GetTimerManager().ClearTimer(StunWeightDescTimer);
+
+			GetWorld()->GetTimerManager().SetTimer(
+				StunWeightDescDelayTimer,
+				this,
+				&UMatrixCharacterAttributeSet::StartDescStunWeight,
+				GetStunWeightDescDelay()
+			);
+		}
 	}
 	else if (Attribute == GetHealthCountAttribute())
 	{
@@ -93,6 +108,29 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 		OnDamaged.Broadcast(Data.EvaluatedData.Magnitude);
 		SetDamage(0.0f);
 	}
+}
+
+void UMatrixCharacterAttributeSet::StartDescStunWeight()
+{
+	GetWorld()->GetTimerManager().SetTimer(
+		StunWeightDescTimer,
+		this,
+		&UMatrixCharacterAttributeSet::DescStunWeight,
+		GetWorld()->GetDeltaSeconds(),
+		true
+	);
+}
+
+void UMatrixCharacterAttributeSet::DescStunWeight()
+{
+	if (GetStunWeight() <= 0.0f)
+	{
+		SetStunWeight(0.0f);
+		GetWorld()->GetTimerManager().ClearTimer(StunWeightDescTimer);
+	}
+
+	const float DescAmount = GetStunWeightDescAmount() * GetWorld()->GetDeltaSeconds();
+	SetStunWeight(GetStunWeight() - DescAmount);
 }
 
 void UMatrixCharacterAttributeSet::SetHealthValue(float Value, const FGameplayEffectModCallbackData& Data)

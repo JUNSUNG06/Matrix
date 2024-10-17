@@ -15,6 +15,7 @@ class MATRIX_API AEnemyMatrixCharacter : public ABaseMatrixCharacter
 	GENERATED_BODY()
 
 public:
+	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 
 public:

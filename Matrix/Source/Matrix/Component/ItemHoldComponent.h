@@ -57,9 +57,11 @@ public:
 protected:
 	TScriptInterface<IHold> CurrentHoldObject;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FName HoldSocket;
 
 public:
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE TScriptInterface<IHold> GetCurrentHoldObject() const { return CurrentHoldObject; };
 
 	//OwnerMesh

@@ -71,7 +71,7 @@ public:
 	virtual UItemHoldComponent* GetItemHoldComponent() override;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = ItemHold)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ItemHold)
 	TObjectPtr<class UItemHoldComponent> ItemHold;
 
 	//LockOn

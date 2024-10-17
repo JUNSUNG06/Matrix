@@ -27,8 +27,6 @@ APlayerMatrixCharacter::APlayerMatrixCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	ItemHold->SetHoldSocket(TEXT("HoldSocket"));
-	ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
 }
 
 void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,6 +57,18 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
+void APlayerMatrixCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (ItemHold)
+	{
+		ItemHold->SetHoldSocket(TEXT("HoldSocket"));
+		ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
+
 	}
 }
 

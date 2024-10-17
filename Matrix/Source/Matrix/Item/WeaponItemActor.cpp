@@ -28,6 +28,8 @@ void AWeaponItemActor::Hold(AActor* Performer)
 {
 	SetOwner(Performer);
 
+	SetActorEnableCollision(false);
+
 	ABaseMatrixCharacter* Character = Cast<ABaseMatrixCharacter>(OwnerActor);
 	if (!Character)
 		return;

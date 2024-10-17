@@ -9,6 +9,18 @@
 
 #include "../Controller/MatrixAIController.h"
 #include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
+#include "../Component/ItemHoldComponent.h"
+
+void AEnemyMatrixCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (ItemHold)
+	{
+		ItemHold->SetHoldSocket(TEXT("HoldSocket"));
+		ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
+	}
+}
 
 void AEnemyMatrixCharacter::BeginPlay()
 {

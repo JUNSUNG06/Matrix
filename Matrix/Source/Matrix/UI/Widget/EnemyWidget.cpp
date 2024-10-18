@@ -12,7 +12,7 @@
 void UEnemyWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	UE_LOG(LogTemp, Log, TEXT("init widget"));
+
 	TSPB_StunWeight->SetVisibility(ESlateVisibility::Collapsed);
 }
 

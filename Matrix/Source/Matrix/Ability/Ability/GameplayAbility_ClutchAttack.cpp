@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "../../Character/BaseMatrixCharacter.h"
 
@@ -42,6 +43,12 @@ void UGameplayAbility_ClutchAttack::ActivateAbility(const FGameplayAbilitySpecHa
 	FVector AttackLocation = TargetActor->GetActorLocation() +
 		TargetActor->GetActorForwardVector() * StartClutchAttackDistance;
 	GetAvatarActorFromActorInfo()->SetActorLocation(AttackLocation);
+
+	FRotator AttackRotation = UKismetMathLibrary::FindLookAtRotation(
+		GetAvatarActorFromActorInfo()->GetActorLocation(),
+		TargetActor->GetActorLocation()
+	);
+	GetAvatarActorFromActorInfo()->SetActorRotation(AttackRotation);
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }

@@ -31,19 +31,23 @@ void UGameplayAbility_LockOn::InputPressed(const FGameplayAbilitySpecHandle Hand
 	if (!bIsLockOn)
 		return;
 
-	OnEndLockOn();
+	EndLockOn();
 }
 
-void UGameplayAbility_LockOn::SetTarget_Implementation(const TScriptInterface<class ILockOnTarget>& LockOnTarget)
+void UGameplayAbility_LockOn::StartLockOn_Implementation(AActor* TargetActor)
 {
 	bIsLockOn = true;
 
-	SetTarget(LockOnTarget);
+	LockOnTargetActor = TargetActor;
+
+	ILockOnTarget::Execute_OnLockOned(TargetActor);
 }
 
-void UGameplayAbility_LockOn::OnEndLockOn_Implementation()
+void UGameplayAbility_LockOn::EndLockOn_Implementation()
 {
 	bIsLockOn = false;
+
+	ILockOnTarget::Execute_OnEndLockOned(LockOnTargetActor);
 
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
@@ -61,10 +65,11 @@ void UGameplayAbility_LockOn::OnCompleteTrace(const FGameplayAbilityTargetDataHa
 		if (!LockOnTarget)
 			continue;
 
-		if (LockOnTarget->CanLockOn_Implementation() == false)
+		if (ILockOnTarget::Execute_CanLockOn(TargetActor) == false)
 			continue;
 
-		SetTarget_Implementation(LockOnTarget);
+		StartLockOn(TargetActor);
+
 		return;
 	}
 

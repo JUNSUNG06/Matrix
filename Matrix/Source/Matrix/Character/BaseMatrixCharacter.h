@@ -76,12 +76,14 @@ protected:
 
 	//LockOn
 public:
-	UFUNCTION(BlueprintCallable)
 	virtual FVector GetLockOnTransform_Implementation() const override;
-	UFUNCTION(BlueprintCallable)
 	virtual AActor* GetLockOnActor_Implementation() override;
-	UFUNCTION(BlueprintCallable)
 	virtual bool CanLockOn_Implementation() override;
+	virtual void OnLockOned_Implementation() override;
+	virtual void OnEndLockOned_Implementation() override;
+
+public:
+	FOnLockOned OnLockOn;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

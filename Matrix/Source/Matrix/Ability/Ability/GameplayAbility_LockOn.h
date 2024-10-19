@@ -23,16 +23,20 @@ public:
 
 public:
 	UFUNCTION(BlueprintNativeEvent)
-	void SetTarget(const TScriptInterface<class ILockOnTarget>& LockOnTarget);
-	virtual void SetTarget_Implementation(const TScriptInterface<class ILockOnTarget>& LockOnTarget);
+	void StartLockOn(AActor* TargetActor);
+	virtual void StartLockOn_Implementation(AActor* TargetActor);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnEndLockOn();
-	virtual void OnEndLockOn_Implementation();
+	void EndLockOn();
+	virtual void EndLockOn_Implementation();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float  LockOnRadius;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<AActor> LockOnTargetActor;
 
 private:
 	UFUNCTION()

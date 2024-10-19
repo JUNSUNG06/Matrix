@@ -90,6 +90,7 @@ FVector ABaseMatrixCharacter::GetLockOnTransform_Implementation() const
 	return GetActorLocation();
 }
 
+
 AActor* ABaseMatrixCharacter::GetLockOnActor_Implementation()
 {
 	return this;
@@ -98,4 +99,14 @@ AActor* ABaseMatrixCharacter::GetLockOnActor_Implementation()
 bool ABaseMatrixCharacter::CanLockOn_Implementation()
 {
 	return true;
+}
+
+
+void ABaseMatrixCharacter::OnLockOned_Implementation()
+{
+	OnLockOn.Broadcast();
+}
+
+void ABaseMatrixCharacter::OnEndLockOned_Implementation()
+{
 }

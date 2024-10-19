@@ -7,7 +7,7 @@
 #include "LockOnTarget.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI, BlueprintType)
+UINTERFACE(MinimalAPI, Blueprintable)
 class ULockOnTarget : public UInterface
 {
 	GENERATED_BODY()
@@ -16,6 +16,9 @@ class ULockOnTarget : public UInterface
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLockOned);
+
 class MATRIX_API ILockOnTarget
 {
 	GENERATED_BODY()
@@ -28,7 +31,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	AActor* GetLockOnActor();
 	virtual AActor* GetLockOnActor_Implementation() = 0;
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	bool CanLockOn();
 	virtual bool CanLockOn_Implementation() = 0;
+	UFUNCTION(BlueprintNativeEvent)
+	void OnLockOned();
+	virtual void OnLockOned_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnEndLockOned();
+	virtual void OnEndLockOned_Implementation() = 0;
 };

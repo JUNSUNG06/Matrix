@@ -15,12 +15,18 @@ class MATRIX_API AEnemyMatrixCharacter : public ABaseMatrixCharacter
 	GENERATED_BODY()
 
 public:
+	AEnemyMatrixCharacter();
+
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 
 public:
 	UFUNCTION(BlueprintCallable)
 	class AMatrixAIController* GetMatrixAI();
+
+public:
+	virtual void OnLockOned_Implementation() override;
+	virtual void OnEndLockOned_Implementation() override;
 
 protected:
 	UFUNCTION()
@@ -29,4 +35,8 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, Category = BT)
 	FName RecentDamageAmountName;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UWidgetComponent> LockOnedWidget;
 };

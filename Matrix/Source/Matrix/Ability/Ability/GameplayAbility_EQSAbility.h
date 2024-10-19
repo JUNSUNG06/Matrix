@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "MatrixAbility.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include "GameplayAbility_EQSAbility.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class MATRIX_API UGameplayAbility_EQSAbility : public UGameplayAbility
+class MATRIX_API UGameplayAbility_EQSAbility : public UMatrixAbility
 {
 	GENERATED_BODY()
 

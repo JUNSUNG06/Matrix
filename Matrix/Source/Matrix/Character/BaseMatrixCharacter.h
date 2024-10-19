@@ -16,6 +16,16 @@
 /**
  * 
  */
+
+UENUM()
+enum class EAbilityActivateType : uint8
+{
+	Activate UMETA(DisplayName = "Activate"),
+	End UMETA(DisplayName = "End"),
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActivateAbility, EAbilityActivateType, AbilityActivateType);
+
 UCLASS()
 class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface, 
 	public IItemHoldInterface, public ILockOnTarget
@@ -47,6 +57,9 @@ protected:
 public:
 	FORCEINLINE UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
 
+public:
+	TMap<FGameplayTag, FOnActivateAbility> AbilityActivateDelegates;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TArray<FAbilityActivationInfo> StartAbilityActivationInfos;
@@ -54,6 +67,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = GAS, meta = (PrivateAccessAllow = true))
 	TArray<FAbilityActivationInfo> CurrentAbilityActivationInfos;
 
+protected:
 	UPROPERTY()
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> AbilitySpecHandles;
 

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "MatrixAbility.h"
 #include "GameplayAbility_PlayMontage.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MATRIX_API UGameplayAbility_PlayMontage : public UGameplayAbility
+class MATRIX_API UGameplayAbility_PlayMontage : public UMatrixAbility
 {
 	GENERATED_BODY()
 

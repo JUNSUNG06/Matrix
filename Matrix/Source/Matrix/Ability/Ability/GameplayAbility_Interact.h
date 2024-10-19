@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "MatrixAbility.h"
 #include "GameplayAbility_Interact.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MATRIX_API UGameplayAbility_Interact : public UGameplayAbility
+class MATRIX_API UGameplayAbility_Interact : public UMatrixAbility
 {
 	GENERATED_BODY()
 	

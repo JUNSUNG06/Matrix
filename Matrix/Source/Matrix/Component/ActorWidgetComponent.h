@@ -15,6 +15,8 @@ class MATRIX_API UActorWidgetComponent : public UWidgetComponent
 	GENERATED_BODY()
 
 public:
-	virtual void BeginPlay() override;
+	virtual void SetOwnerActor(AActor* NewOwnerActor);
 
+protected:
+	TObjectPtr<AActor> OwnerActor;
 };

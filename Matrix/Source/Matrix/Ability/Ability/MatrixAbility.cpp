@@ -25,5 +25,46 @@ void UMatrixAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	OwnerMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
+	if (!OwnerMC)
+	{
+		OwnerMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
+	}
+	
+	if (OwnerMC)
+	{
+		for (int i = 0; i < ActivationOwnedTags.Num(); i++)
+		{
+			if (!ActivationOwnedTags.IsValidIndex(i))
+				continue;
+
+			FGameplayTag Tag = ActivationOwnedTags.GetByIndex(i);
+			if (OwnerMC->AbilityActivateDelegates.Contains(Tag))
+			{
+				OwnerMC->AbilityActivateDelegates[Tag].Broadcast(EAbilityActivateType::Activate);
+			}
+		}
+	}
+}
+
+void UMatrixAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	if (IsActive())
+	{
+		if (OwnerMC)
+		{
+			for (int i = 0; i < ActivationOwnedTags.Num(); i++)
+			{
+				if (!ActivationOwnedTags.IsValidIndex(i))
+					continue;
+
+				FGameplayTag Tag = ActivationOwnedTags.GetByIndex(i);
+				if (OwnerMC->AbilityActivateDelegates.Contains(Tag))
+				{
+					OwnerMC->AbilityActivateDelegates[Tag].Broadcast(EAbilityActivateType::End);
+				}
+			}
+		}
+	}
+
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

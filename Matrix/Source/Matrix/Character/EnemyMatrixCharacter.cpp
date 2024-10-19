@@ -11,15 +11,15 @@
 #include "../Controller/MatrixAIController.h"
 #include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
 #include "../Component/ItemHoldComponent.h"
+#include "../Component/ActorWidgetComponent.h"
 
 AEnemyMatrixCharacter::AEnemyMatrixCharacter()
 {
 	LockOnedWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnedWidget"));
-	LockOnedWidget->AttachToComponent(
-		GetMesh(),
-		FAttachmentTransformRules::SnapToTargetNotIncludingScale, 
-		FName("LockOnedWidgetSocket")
-	);
+	LockOnedWidget->SetupAttachment(GetMesh(), FName("LockOnedWidgetSocket"));
+
+	StunedWidget = CreateDefaultSubobject<UActorWidgetComponent>(TEXT("StunedWidget"));
+	StunedWidget->SetupAttachment(GetMesh(), FName("LockOnedWidgetSocket"));
 }
 
 void AEnemyMatrixCharacter::PostInitializeComponents()
@@ -44,11 +44,25 @@ void AEnemyMatrixCharacter::BeginPlay()
 
 	if (LockOnedWidget)
 	{
+		/*LockOnedWidget->SetupAttachment(
+			GetMesh(),
+			FName("LockOnedWidgetSocket")
+		);*/
+
 		if (LockOnedWidget->GetWidget())
 		{
-			UE_LOG(LogTemp, Log, TEXT("asdasdasdasd"));
 			LockOnedWidget->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
 		}
+	}
+
+	if (StunedWidget)
+	{
+		/*StunedWidget->SetupAttachment(
+			GetMesh(),
+			FName("LockOnedWidgetSocket")
+		);*/
+
+		StunedWidget->SetOwnerActor(this);
 	}
 }
 

@@ -39,4 +39,6 @@ public:
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UWidgetComponent> LockOnedWidget;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UActorWidgetComponent> StunedWidget;
 };

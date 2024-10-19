@@ -61,9 +61,12 @@ FGameplayAbilitySpecHandle ABaseMatrixCharacter::GetAbilitySpecHandleByTag(FGame
 void ABaseMatrixCharacter::AddAbility(const FAbilityActivationInfo& Info)
 {
 	CurrentAbilityActivationInfos.Add(Info);
+
 	FGameplayAbilitySpec Spec(Info.GetAbility());
 	FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
 	AbilitySpecHandles.Add(Info.GetTag(), Handle);
+
+	AbilityActivateDelegates.Add(Info.GetTag(), {});
 }
 
 void ABaseMatrixCharacter::RemoveAbility(const FAbilityActivationInfo& Info)
@@ -78,6 +81,8 @@ void ABaseMatrixCharacter::RemoveAbility(const FAbilityActivationInfo& Info)
 	ASC->ClearAbility(Handle);
 
 	AbilitySpecHandles.Remove(Info.GetTag());
+
+	AbilityActivateDelegates.Remove(Info.GetTag());
 }
 
 UItemHoldComponent* ABaseMatrixCharacter::GetItemHoldComponent()

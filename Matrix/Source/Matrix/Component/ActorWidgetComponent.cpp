@@ -5,13 +5,14 @@
 
 #include "../UI/Widget/ActorUserWidget.h"
 
-void UActorWidgetComponent::BeginPlay()
+void UActorWidgetComponent::SetOwnerActor(AActor* NewOwnerActor)
 {
-	Super::InitWidget();
-
-	UActorUserWidget* ActorWidget = Cast<UActorUserWidget>(GetWidget());
-	if (ActorWidget)
+	if (GetWidget())
 	{
-		ActorWidget->SetOwnerActor(GetOwner());
+		UActorUserWidget* ActorWidget = Cast<UActorUserWidget>(GetWidget());
+		if (ActorWidget)
+		{
+			ActorWidget->SetOwnerActor(GetOwner());
+		}
 	}
 }

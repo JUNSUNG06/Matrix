@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "MatrixAbility.h"
 #include "GameplayTags.h"
 #include "GameplayAbility_Katana_Attack.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class MATRIX_API UGameplayAbility_Katana_Attack : public UGameplayAbility
+class MATRIX_API UGameplayAbility_Katana_Attack : public UMatrixAbility
 {
 	GENERATED_BODY()
 	

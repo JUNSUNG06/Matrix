@@ -19,18 +19,30 @@ void UAnimNotify_SetAttackWarpTarget::Notify(USkeletalMeshComponent* MeshComp, U
 		{
 			AActor* TargetActor = MC->Target;
 			
-			FVector TargetToOwner = (OwnerActor->GetActorLocation() - TargetActor->GetActorLocation()).GetSafeNormal();
+			FVector OwenrToTarget = (TargetActor->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
 			FVector TargetLocation;
-			if (FVector::Distance(OwnerActor->GetActorLocation(),
+			float Distance = FMath::Clamp(
+				(float)FVector::Distance(
+					TargetActor->GetActorLocation(),
+					OwnerActor->GetActorLocation()
+				),
+				0.0f,
+				MaxDistance
+			);
+			UE_LOG(LogTemp, Log, TEXT("%f"), Distance);
+			/*if (FVector::Distance(OwnerActor->GetActorLocation(),
 				TargetActor->GetActorLocation()) < (double)Distance)
 			{
 				TargetLocation = OwnerActor->GetActorLocation();
 			}
 			else
 			{
-				TargetLocation = TargetActor->GetActorLocation() + (TargetToOwner * Distance) +
+				TargetLocation = TargetActor->GetActorLocation() + (TargetToOwner * MaxDistance) +
 					TargetActor->GetActorRotation().RotateVector(Offset);
-			}
+			}*/
+
+			TargetLocation = OwnerActor->GetActorLocation() + (OwenrToTarget * Distance) +
+				TargetActor->GetActorRotation().RotateVector(Offset);
 
 			FMotionWarpingTarget Target = {};
 			Target.Name = TargetName;

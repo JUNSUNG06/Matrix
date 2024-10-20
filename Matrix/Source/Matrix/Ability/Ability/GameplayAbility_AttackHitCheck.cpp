@@ -40,6 +40,12 @@ void UGameplayAbility_AttackHitCheck::OnTraceResultCallback(const FGameplayAbili
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(DetectActor);
 		if (TargetASC)
 		{
+			if (TargetASC->HasMatchingGameplayTag(ABILITY_CHARACTER_PARRIED))
+			{
+				TargetASC->RemoveLooseGameplayTag(ABILITY_CHARACTER_PARRIED);
+				continue;
+			}
+
 			FGameplayEventData Payload;
 			Payload.EventMagnitude = Level;
 			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(

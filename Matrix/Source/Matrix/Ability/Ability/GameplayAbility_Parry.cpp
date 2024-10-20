@@ -10,6 +10,8 @@
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
 #include "../AbilityTask/AbilityTask_SetMotionWarp.h"
+#include "../../Character/BaseMatrixCharacter.h"
+#include "../../Tag/MatrixTag.h"
 
 void UGameplayAbility_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -58,6 +60,8 @@ void UGameplayAbility_Parry::OnParry(
 		UAbilityTask_SetMotionWarp::CreateTask(this, TEXT("KnockBackPoint"),
 			KnockBackLocation, FRotator::ZeroRotator);
 	MotionWarpTask->ReadyForActivation();
+
+	OwnerMC->GetAbilitySystemComponent()->AddLooseGameplayTag(ABILITY_CHARACTER_PARRIED);
 }
 
 void UGameplayAbility_Parry::OnCompleteCallback()

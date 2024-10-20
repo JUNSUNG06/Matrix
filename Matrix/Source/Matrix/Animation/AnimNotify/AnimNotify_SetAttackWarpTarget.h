@@ -21,7 +21,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	FName TargetName;
 	UPROPERTY(EditAnywhere)
-	float Distance;
+	float MaxDistance;
 	UPROPERTY(EditAnywhere)
 	FVector Offset;
 };

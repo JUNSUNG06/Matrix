@@ -43,7 +43,7 @@ void ABaseMatrixCharacter::BeginPlay()
 		AttributeSet->OnDamaged.AddDynamic(this, &ABaseMatrixCharacter::OnDamaged);
 	}
 
-	for (const FAbilityActivationInfo Info : StartAbilityActivationInfos)
+	for (const FAbilityActivationInfo& Info : StartAbilityActivationInfos)
 	{
 		AddAbility(Info);
 	}
@@ -126,9 +126,10 @@ void ABaseMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 	Payload.EventMagnitude = Damage;
 	Payload.Instigator = Attacker;
 
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		this,
+	ASC->TriggerAbilityFromGameplayEvent(
+		GetAbilitySpecHandleByTag(ABILITY_CHARACTER_DAMAGED),
+		GetAbilitySystemComponent()->AbilityActorInfo.Get(),
 		ABILITY_CHARACTER_DAMAGED,
-		Payload
-	);
+		&Payload,
+		*ASC);
 }

@@ -37,11 +37,6 @@ void AEnemyMatrixCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AttributeSet)
-	{
-		AttributeSet->OnDamaged.AddDynamic(this, &AEnemyMatrixCharacter::OnDamaged);
-	}
-
 	if (LockOnedWidget)
 	{
 		if (LockOnedWidget->GetWidget())

@@ -83,6 +83,8 @@ void AEnemyMatrixCharacter::OnEndLockOned_Implementation()
 
 void AEnemyMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 {
+	Super::OnDamaged(Attacker, Damage);
+
 	AAIController* AI = Cast<AAIController>(GetController());
 	UBlackboardComponent* Blackboard = AI->GetBlackboardComponent();
 	float RecentDamageAmount = Blackboard->GetValueAsFloat(RecentDamageAmountName);

@@ -4,6 +4,7 @@
 #include "Character/BaseMatrixCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MotionWarpingComponent.h"
 
@@ -11,6 +12,7 @@
 #include "../Struct/Ability/AbilityInformation.h"
 #include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
 #include "../DataAsset/AttributeSet/MCAttributeSetDataAsset.h"
+#include "../Tag/MatrixTag.h"
 
 ABaseMatrixCharacter::ABaseMatrixCharacter()
 {
@@ -120,4 +122,13 @@ void ABaseMatrixCharacter::OnEndLockOned_Implementation()
 
 void ABaseMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 {
+	FGameplayEventData Payload;
+	Payload.EventMagnitude = Damage;
+	Payload.Instigator = Attacker;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		ABILITY_CHARACTER_DAMAGED,
+		Payload
+	);
 }

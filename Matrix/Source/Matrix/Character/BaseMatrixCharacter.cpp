@@ -37,6 +37,8 @@ void ABaseMatrixCharacter::BeginPlay()
 		AttributeSet->InitHealth(100.0f);
 
 		GetCharacterMovement()->MaxWalkSpeed = AttributeSet->GetMaxWalkSpeed();
+
+		AttributeSet->OnDamaged.AddDynamic(this, &ABaseMatrixCharacter::OnDamaged);
 	}
 
 	for (const FAbilityActivationInfo Info : StartAbilityActivationInfos)
@@ -113,5 +115,9 @@ void ABaseMatrixCharacter::OnLockOned_Implementation()
 }
 
 void ABaseMatrixCharacter::OnEndLockOned_Implementation()
+{
+}
+
+void ABaseMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 {
 }

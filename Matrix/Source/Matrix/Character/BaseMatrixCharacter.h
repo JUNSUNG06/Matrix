@@ -11,6 +11,7 @@
 #include "../Interface/ItemHoldInterface.h"
 #include "../Struct/Ability/AbilityInformation.h"
 #include "../Interface/LockOnTarget.h"
+#include "../Interface/Damageable.h"
 
 #include "BaseMatrixCharacter.generated.h"
 /**
@@ -28,7 +29,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActivateAbility, EAbilityActivate
 
 UCLASS()
 class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface, 
-	public IItemHoldInterface, public ILockOnTarget
+	public IItemHoldInterface, public ILockOnTarget, public IDamageable
 {
 	GENERATED_BODY()
 	
@@ -98,6 +99,10 @@ public:
 
 public:
 	FOnLockOned OnLockOn;
+
+public:
+	UFUNCTION()
+	virtual void OnDamaged(AActor* Attacker, float Damage) override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

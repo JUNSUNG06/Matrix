@@ -28,9 +28,8 @@ public:
 	virtual void OnLockOned_Implementation() override;
 	virtual void OnEndLockOned_Implementation() override;
 
-protected:
-	UFUNCTION()
-	void OnDamaged(float Value);
+public:
+	virtual void OnDamaged(AActor* Attacker, float Damage) override;
 
 public:
 	UPROPERTY(EditAnywhere, Category = BT)

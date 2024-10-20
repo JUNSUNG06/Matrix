@@ -44,11 +44,6 @@ void AEnemyMatrixCharacter::BeginPlay()
 
 	if (LockOnedWidget)
 	{
-		/*LockOnedWidget->SetupAttachment(
-			GetMesh(),
-			FName("LockOnedWidgetSocket")
-		);*/
-
 		if (LockOnedWidget->GetWidget())
 		{
 			LockOnedWidget->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
@@ -57,11 +52,6 @@ void AEnemyMatrixCharacter::BeginPlay()
 
 	if (StunedWidget)
 	{
-		/*StunedWidget->SetupAttachment(
-			GetMesh(),
-			FName("LockOnedWidgetSocket")
-		);*/
-
 		StunedWidget->SetOwnerActor(this);
 	}
 }
@@ -91,10 +81,10 @@ void AEnemyMatrixCharacter::OnEndLockOned_Implementation()
 	}
 }
 
-void AEnemyMatrixCharacter::OnDamaged(float Value)
+void AEnemyMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 {
 	AAIController* AI = Cast<AAIController>(GetController());
 	UBlackboardComponent* Blackboard = AI->GetBlackboardComponent();
 	float RecentDamageAmount = Blackboard->GetValueAsFloat(RecentDamageAmountName);
-	Blackboard->SetValueAsFloat(RecentDamageAmountName, RecentDamageAmount + Value);
+	Blackboard->SetValueAsFloat(RecentDamageAmountName, RecentDamageAmount + Damage);
 }

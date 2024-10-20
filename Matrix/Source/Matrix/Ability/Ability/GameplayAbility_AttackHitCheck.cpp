@@ -8,6 +8,7 @@
 
 #include "../AbilityTask/GAAT_TraceTarget.h"
 #include "../TargetActor/GATA_SphereTrace.h"
+#include "../../Tag/MatrixTag.h"
 
 UGameplayAbility_AttackHitCheck::UGameplayAbility_AttackHitCheck()
 {
@@ -39,6 +40,14 @@ void UGameplayAbility_AttackHitCheck::OnTraceResultCallback(const FGameplayAbili
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(DetectActor);
 		if (TargetASC)
 		{
+			FGameplayEventData Payload;
+			Payload.EventMagnitude = Level;
+			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+				DetectActor,
+				ABILITY_CHARACTER_DAMAGED,
+				Payload
+			);
+
 			FGameplayEffectSpecHandle EffectHandle =
 				MakeOutgoingGameplayEffectSpec(AttackDamageEffect, Level);
 			if (EffectHandle.IsValid())

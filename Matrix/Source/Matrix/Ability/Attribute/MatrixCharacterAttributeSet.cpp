@@ -104,8 +104,14 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 		UE_LOG(LogTemp, Log, TEXT("Damaged"));
 		SetHealthValue(
 			FMath::Clamp(GetHealth() - Data.EvaluatedData.Magnitude, 0.0f, GetMaxHealth()),
-			Data);
-		OnDamaged.Broadcast(Data.EvaluatedData.Magnitude);
+			Data
+		);
+
+		OnDamaged.Broadcast(
+			Data.EffectSpec.GetContext().GetEffectCauser(),
+			Data.EvaluatedData.Magnitude
+		);
+
 		SetDamage(0.0f);
 	}
 }

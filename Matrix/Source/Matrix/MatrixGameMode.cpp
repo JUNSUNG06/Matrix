@@ -13,3 +13,13 @@ AMatrixGameMode::AMatrixGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 }
+
+void AMatrixGameMode::Clear_Implementation()
+{
+	OnGameClear.Broadcast();
+}
+
+void AMatrixGameMode::Fail_Implementation()
+{
+	OnGameFail.Broadcast();
+}

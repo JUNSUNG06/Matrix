@@ -33,8 +33,35 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 
 	if (Attribute == GetHealthAttribute())
 	{
+		if (OldValue == NewValue)
+			return;
+
 		UE_LOG(LogTemp, Log, TEXT("Health : %f -> %f"), OldValue, NewValue);
+
 		OnHealthChanged.Broadcast(OldValue, NewValue, GetMaxHealth());
+
+		if (NewValue <= 0.0f)
+		{
+			SetHealthCount(GetHealthCount() - 1);
+		}
+	}
+	else if (Attribute == GetHealthCountAttribute())
+	{
+		OnHealthCountChanged.Broadcast(OldValue, NewValue, GetMaxHealthCount());
+
+		if (NewValue > 0.0f)
+		{
+			SetHealth(GetMaxHealth());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("Die"));
+			
+			GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(
+				FGameplayTagContainer(ABILITY_CHARACTER_DIE));
+
+			OnDie.Broadcast();
+		}
 	}
 	else if (Attribute == GetStunWeightAttribute())
 	{
@@ -45,21 +72,22 @@ void UMatrixCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute&
 			GetWorld()->GetTimerManager().ClearTimer(StunWeightDescDelayTimer);
 			GetWorld()->GetTimerManager().ClearTimer(StunWeightDescTimer);
 
-			GetWorld()->GetTimerManager().SetTimer(
-				StunWeightDescDelayTimer,
-				this,
-				&UMatrixCharacterAttributeSet::StartDescStunWeight,
-				GetStunWeightDescDelay()
-			);
-		}
-	}
-	else if (Attribute == GetHealthCountAttribute())
-	{
-		OnHealthCountChanged.Broadcast(OldValue, NewValue, GetMaxHealthCount());
-
-		if (NewValue > 0)
-		{
-			SetHealth(GetMaxHealth());
+			if (NewValue >= GetMaxStunWeight())
+			{
+				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(
+					FGameplayTagContainer(ABILITY_CHARACTER_STARTSTUN));
+				OnOverStunWeight.Broadcast();
+				SetStunWeight(0.0f);
+			}
+			else
+			{
+				GetWorld()->GetTimerManager().SetTimer(
+					StunWeightDescDelayTimer,
+					this,
+					&UMatrixCharacterAttributeSet::StartDescStunWeight,
+					GetStunWeightDescDelay()
+				);
+			}
 		}
 	}
 }
@@ -75,36 +103,14 @@ bool UMatrixCharacterAttributeSet::PreGameplayEffectExecute(FGameplayEffectModCa
 void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
-
-	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
-	{
-		if (GetHealth() <= 0.0f)
-		{
-			SetHealthCount(GetHealthCount() - 1);
-
-			if (GetHealthCount() <= 0.0f)
-			{
-				UE_LOG(LogTemp, Log, TEXT("Die"));
-				Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_DIE));
-				OnDie.Broadcast();
-			}
-		}
-	}
-	else if (Data.EvaluatedData.Attribute == GetStunWeightAttribute())
-	{
-		if (GetStunWeight() >= GetMaxStunWeight())
-		{
-			Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(ABILITY_CHARACTER_STARTSTUN));
-			OnOverStunWeight.Broadcast();
-			SetStunWeight(0.0f);
-		}
-	}
-	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	
+	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Damaged"));
-		SetHealthValue(
-			FMath::Clamp(GetHealth() - Data.EvaluatedData.Magnitude, 0.0f, GetMaxHealth()),
-			Data
+		SetHealth(
+			FMath::Clamp(
+				GetHealth() - Data.EvaluatedData.Magnitude,
+				0.0f, GetMaxHealth())
 		);
 
 		OnDamaged.Broadcast(

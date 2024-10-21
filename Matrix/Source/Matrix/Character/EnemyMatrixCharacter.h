@@ -32,6 +32,9 @@ public:
 	virtual void OnDamaged(AActor* Attacker, float Damage) override;
 
 public:
+	virtual void OnDie() override;
+
+public:
 	UPROPERTY(EditAnywhere, Category = BT)
 	FName RecentDamageAmountName;
 

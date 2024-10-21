@@ -13,6 +13,7 @@
 
 #include "../Component/ItemHoldComponent.h"
 #include "../Struct/Ability/AbilityInformation.h"
+#include "../Interface/GameCycle.h"
 
 APlayerMatrixCharacter::APlayerMatrixCharacter()
 {
@@ -206,5 +207,15 @@ void APlayerMatrixCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void APlayerMatrixCharacter::OnDie()
+{
+	Super::OnDie();
+
+	if (GetMatrixGameMode())
+	{
+		IGameCycle::Execute_Fail(GetMatrixGameMode());
 	}
 }

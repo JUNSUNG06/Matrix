@@ -26,7 +26,7 @@ UCLASS()
 class MATRIX_API AMatrixHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddWidget(class UMatrixUserWidget* Widget);

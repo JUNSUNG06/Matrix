@@ -12,6 +12,7 @@
 #include "../Ability/Attribute/MatrixCharacterAttributeSet.h"
 #include "../Component/ItemHoldComponent.h"
 #include "../Component/ActorWidgetComponent.h"
+#include "../Interface/GameCycle.h"
 
 AEnemyMatrixCharacter::AEnemyMatrixCharacter()
 {
@@ -84,4 +85,14 @@ void AEnemyMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 	UBlackboardComponent* Blackboard = AI->GetBlackboardComponent();
 	float RecentDamageAmount = Blackboard->GetValueAsFloat(RecentDamageAmountName);
 	Blackboard->SetValueAsFloat(RecentDamageAmountName, RecentDamageAmount + Damage);
+}
+
+void AEnemyMatrixCharacter::OnDie()
+{
+	Super::OnDie();
+
+	if (GetMatrixGameMode())
+	{
+		IGameCycle::Execute_Clear(GetMatrixGameMode());
+	}
 }

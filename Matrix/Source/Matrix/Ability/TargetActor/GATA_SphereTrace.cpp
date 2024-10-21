@@ -4,6 +4,7 @@
 #include "Ability/TargetActor/GATA_SphereTrace.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameFramework/Character.h"
+#include "Abilities/GameplayAbilityTargetTypes.h"
 #include "DrawDebugHelpers.h"
 
 AGATA_SphereTrace::AGATA_SphereTrace() : 
@@ -37,19 +38,30 @@ void AGATA_SphereTrace::SetTraceData(float Range, float Radius)
 FGameplayAbilityTargetDataHandle AGATA_SphereTrace::MakeTargetData() const
 {
 	TArray<FHitResult> HitResult;
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(AGATA_SphereTrace), false, SourceActor);
-	FVector Start = SourceActor->GetActorForwardVector() * TraceRange + SourceActor->GetActorLocation();
+	FCollisionQueryParams Params(
+		SCENE_QUERY_STAT(AGATA_SphereTrace),
+		false,
+		SourceActor
+	);
+	FVector Start = SourceActor->GetActorForwardVector() * TraceRange +
+		SourceActor->GetActorLocation();
 
-	bool HitDetected = GetWorld()->SweepMultiByChannel(HitResult, Start, Start, FQuat::Identity,
-		ECC_Visibility, FCollisionShape::MakeSphere(TraceRadius), Params);
+	bool HitDetected = GetWorld()->SweepMultiByChannel(
+		HitResult,
+		Start, Start,
+		FQuat::Identity,
+		ECC_Visibility,
+		FCollisionShape::MakeSphere(TraceRadius), Params
+	);
 	
 	FGameplayAbilityTargetDataHandle DataHandle;
 	if (HitDetected)
 	{
-		for (const FHitResult Hit : HitResult)
+		for (const FHitResult& Hit : HitResult)
 		{
 			FGameplayAbilityTargetData_SingleTargetHit* TargetData =
 				new FGameplayAbilityTargetData_SingleTargetHit(Hit);
+			
 			DataHandle.Add(TargetData);
 		}
 	}

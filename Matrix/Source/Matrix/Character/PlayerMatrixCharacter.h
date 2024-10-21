@@ -22,7 +22,7 @@ UCLASS()
 class MATRIX_API APlayerMatrixCharacter : public ABaseMatrixCharacter
 {
 	GENERATED_BODY()
-
+	
 public:
 	APlayerMatrixCharacter();
 	
@@ -89,4 +89,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+public:
+	virtual void OnDie() override;
 };

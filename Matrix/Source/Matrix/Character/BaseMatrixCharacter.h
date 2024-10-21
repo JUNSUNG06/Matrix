@@ -12,6 +12,7 @@
 #include "../Struct/Ability/AbilityInformation.h"
 #include "../Interface/LockOnTarget.h"
 #include "../Interface/Damageable.h"
+#include "../MatrixGameMode.h"
 
 #include "BaseMatrixCharacter.generated.h"
 /**
@@ -105,6 +106,14 @@ public:
 	virtual void OnDamaged(AActor* Attacker, float Damage) override;
 
 public:
+	UFUNCTION()
+	virtual void OnDie();
+
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* Target;
+
+	//Utils
+public:
+	FORCEINLINE AMatrixGameMode* GetMatrixGameMode() { return Cast<AMatrixGameMode>(GetWorld()->GetAuthGameMode()); }
 };

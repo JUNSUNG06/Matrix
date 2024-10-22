@@ -28,6 +28,9 @@ class MATRIX_API AMatrixHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void AddWidget(class UMatrixUserWidget* Widget);
 
@@ -36,10 +39,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HideWidget(class UMatrixUserWidget* Widget);
 
+public:
+	UFUNCTION(BlueprintCallable)
+	int BackMenu();
+
 protected:
 	UPROPERTY()
-	TMap<EWidgetType, FWidgetContainer> Widgets;
+	TArray<class UMatrixUserWidget*> MenuWidgetStack;
 
-	class UMatrixUserWidget* ActivateWidget;
+	TObjectPtr<class UMatrixUserWidget> ActivateMenuWidget;
+
+	UPROPERTY()
+	TMap<EWidgetType, FWidgetContainer> Widgets;
 };
 

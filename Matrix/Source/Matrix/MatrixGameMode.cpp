@@ -23,3 +23,12 @@ void AMatrixGameMode::Fail_Implementation()
 {
 	OnGameFail.Broadcast();
 }
+
+void AMatrixGameMode::Pause_Implementation(bool IsPause)
+{
+	bIsPaused = IsPause;
+
+	GetWorldSettings()->SetTimeDilation(IsPause ? 0.0f : 1.0f);
+
+	OnGamePause.Broadcast(IsPause);
+}

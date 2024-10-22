@@ -20,10 +20,21 @@ public:
 public:
 	virtual void Clear_Implementation() override;
 	virtual void Fail_Implementation() override;
+	UFUNCTION(BlueprintCallable)
+	virtual void Pause_Implementation(bool IsPause) override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FOnGameClear OnGameClear;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FOnGameFail OnGameFail;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FOnGamePause OnGamePause;
+
+protected:
+	UPROPERTY()
+	bool bIsPaused;
+
+public:
+	FORCEINLINE bool GetIsPaused() { return bIsPaused; }
 };

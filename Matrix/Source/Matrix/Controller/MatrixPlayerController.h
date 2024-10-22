@@ -6,39 +6,65 @@
 #include "GameFramework/PlayerController.h"
 #include "MatrixPlayerController.generated.h"
 
-/**
- * 
- */
+UENUM(BlueprintType)
+enum class EInputMappingContextType : uint8
+{
+	Default UMETA(DisplayName = "Default"),
+	UI UMETA(DisplayName = "UI"),
+};
+
 UCLASS()
 class MATRIX_API AMatrixPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
+	virtual void OnPossess(APawn* aPawn) override;
 	virtual void BeginPlay() override;
 
-protected:
-	UFUNCTION()
-	void OnGameClear();
-	UFUNCTION()
-	void OnGameFail();
+	//Input
+public:
+	void ChangeMappingContext(EInputMappingContextType Type);
 
+protected:
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	//UInputMappingContext* DefaultMappingContext;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TMap<EInputMappingContextType, class UInputMappingContext*> MappingContexts;
+	EInputMappingContextType CurrentMappingContextType;
+
+	class UEnhancedInputLocalPlayerSubsystem* Subsystem;
+
+	//Widget
 protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
-
 	UPROPERTY()
-	class UPlayerWidget* PlayerWidget;
+	TObjectPtr<class UPlayerWidget> PlayerWidget;
 
-protected:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMatrixUserWidget> PauseWidgetClass;
+	TObjectPtr<class UMatrixUserWidget> PauseWidget;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMatrixUserWidget> ClearWidgetClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMatrixUserWidget> FailWidgetClass;
 
+
+	//GameCycle
+protected:
+	UFUNCTION()
+	void OnGameClear();
+	UFUNCTION()
+	void OnGameFail();
+	UFUNCTION()
+	void OnGamePause(bool IsPause);
+
 	//Utils
 public:
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE class AMatrixHUD* GetMatrixHUD() { return GetHUD<class AMatrixHUD>(); }
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE class AMatrixGameMode* GetMatrixGameMode() { return Cast<AMatrixGameMode>(GetWorld()->GetAuthGameMode()); }
-
 };

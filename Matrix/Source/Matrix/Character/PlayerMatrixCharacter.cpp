@@ -10,10 +10,12 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "AbilitySystemComponent.h"
+#include "InputMappingContext.h"
 
 #include "../Component/ItemHoldComponent.h"
 #include "../Struct/Ability/AbilityInformation.h"
 #include "../Interface/GameCycle.h"
+#include "../UI/HUD/MatrixHUD.h"
 
 APlayerMatrixCharacter::APlayerMatrixCharacter()
 {
@@ -27,20 +29,10 @@ APlayerMatrixCharacter::APlayerMatrixCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
 }
 
 void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
-
 	InputCompo = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	// Set up action bindings
 	if (InputCompo) 
@@ -54,6 +46,12 @@ void APlayerMatrixCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		// Looking
 		InputCompo->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerMatrixCharacter::Look);
+		
+		InputCompo->BindAction(
+			PauseAndBackAction,
+			ETriggerEvent::Triggered,
+			this,
+			&APlayerMatrixCharacter::PauseAndBack);
 	}
 	else
 	{
@@ -69,7 +67,6 @@ void APlayerMatrixCharacter::PostInitializeComponents()
 	{
 		ItemHold->SetHoldSocket(TEXT("HoldSocket"));
 		ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
-
 	}
 }
 
@@ -85,6 +82,8 @@ void APlayerMatrixCharacter::BeginPlay()
 
 void APlayerMatrixCharacter::PossessedBy(AController* NewController)
 {
+	Super::PossessedBy(NewController);
+
 	APlayerController* PlayerController = CastChecked<APlayerController>(NewController);
 	PlayerController->ConsoleCommand(TEXT("showdebug abilitysystem"));
 }
@@ -207,6 +206,25 @@ void APlayerMatrixCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void APlayerMatrixCharacter::PauseAndBack(const FInputActionValue& Value)
+{
+	if (!GetMatrixGameMode()->GetIsPaused())
+	{
+		IGameCycle::Execute_Pause(GetMatrixGameMode(), true);
+		return;
+	}
+
+	AMatrixHUD* HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AMatrixHUD>();
+	if (HUD)
+	{
+		int RemainMenuWidgetNum = HUD->BackMenu();
+		if (RemainMenuWidgetNum == 0)
+		{
+			IGameCycle::Execute_Pause(GetMatrixGameMode(), false);
+		}
 	}
 }
 

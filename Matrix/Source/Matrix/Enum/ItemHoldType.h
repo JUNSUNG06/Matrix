@@ -11,6 +11,7 @@ enum class EItemHoldType : uint8
 {
 	UnHold UMETA(DisplayName = "UnHold"),
 	Sword UMETA(DisplayName = "Sword"),
+	LongSword UMETA(DisplayName = "LongSword"),
 };
 
 UCLASS()

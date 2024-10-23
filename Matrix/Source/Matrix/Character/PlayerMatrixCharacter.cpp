@@ -67,6 +67,7 @@ void APlayerMatrixCharacter::PostInitializeComponents()
 	{
 		ItemHold->SetHoldSocket(TEXT("HoldSocket"));
 		ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_1"));
+		ItemHold->RegistEquipSocket(TEXT("EquipmentSocket_2"));
 	}
 }
 

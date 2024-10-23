@@ -58,6 +58,7 @@ void UGameplayAbility_ComboAttack::PlayNextAttack()
 
 void UGameplayAbility_ComboAttack::CheckAttackCombo()
 {
+	UE_LOG(LogTemp, Log, TEXT("%d"), CurrentComboCount);
 	if (bIsSetNextCombo)
 	{
 		PlayNextAttack();
@@ -73,7 +74,7 @@ void UGameplayAbility_ComboAttack::SetComboTimer()
 
 	float NextComboCheckTime = ComboCheckFrames[CurrentComboCount] /
 		FrameRate;
-	UE_LOG(LogTemp, Log, TEXT("%f"), NextComboCheckTime);
+	UE_LOG(LogTemp, Log, TEXT("combo time : %f"), NextComboCheckTime);
 	if (NextComboCheckTime <= 0.0f)
 		return;
 

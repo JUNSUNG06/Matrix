@@ -51,6 +51,8 @@ protected:
 	UPROPERTY()
 	class APlayerMatrixCharacter* Player;
 
+	AActor* TargetActor;
+
 private:
 	FVector StartCameraSocketOffset;
 	FVector StartCameraTargetOffset;

@@ -34,6 +34,13 @@ void UGameplayAbility_LockOn::InputPressed(const FGameplayAbilitySpecHandle Hand
 	EndLockOn();
 }
 
+void UGameplayAbility_LockOn::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
+{
+	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
+
+	EndLockOn();
+}
+
 void UGameplayAbility_LockOn::StartLockOn_Implementation(AActor* TargetActor)
 {
 	bIsLockOn = true;

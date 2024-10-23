@@ -25,7 +25,7 @@ void AMatrixPlayerController::BeginPlay()
 	PlayerWidget->SetOwnerActor(this);
 	PlayerWidget->SetHealthPercent(1.0f, true);
 	GetMatrixHUD()->AddWidget(PlayerWidget);
-
+	
 	PauseWidget = CreateWidget<UMatrixUserWidget>(this, PauseWidgetClass);
 	GetMatrixHUD()->AddWidget(PauseWidget);
 	PauseWidget->SetVisibility(ESlateVisibility::Collapsed);

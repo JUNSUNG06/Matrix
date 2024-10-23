@@ -18,6 +18,7 @@ class MATRIX_API UGameplayAbility_ClutchAttack : public UGameplayAbility_PlayMon
 public:
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, OUT FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -26,4 +27,32 @@ public:
 	TObjectPtr<UAnimMontage> ClutchedAnimMontage;
 	UPROPERTY(EditAnywhere)
 	float StartClutchAttackDistance;
+
+protected:
+	UFUNCTION()
+	void TransCamera(bool ReturnToStart);
+
+protected:
+	UPROPERTY(EditAnywhere)
+	FVector DestCameraSocketOffest;
+	UPROPERTY(EditAnywhere)
+	FVector DestCameraTargetOffset;
+	UPROPERTY(EditAnywhere)
+	FRotator DestCameraRotation;
+
+	UPROPERTY(EditAnywhere)
+	float TransTime;
+	float CurrentTransTime;
+	FTimerHandle TransCameraHandle;
+
+	UPROPERTY(EditAnywhere)
+	class UCurveFloat* Curve;
+
+	UPROPERTY()
+	class APlayerMatrixCharacter* Player;
+
+private:
+	FVector StartCameraSocketOffset;
+	FVector StartCameraTargetOffset;
+	FRotator StartCameraRotation;
 };

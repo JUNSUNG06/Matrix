@@ -53,6 +53,8 @@ void AMatrixHUD::ShowWidget(UMatrixUserWidget* Widget)
 		MenuWidgetStack.Push(Widget);
 		ActivateMenuWidget = Widget;
 	}
+
+	Widget->OnShow();
 }
 
 void AMatrixHUD::HideWidget(UMatrixUserWidget* Widget)
@@ -85,6 +87,8 @@ void AMatrixHUD::HideWidget(UMatrixUserWidget* Widget)
 			ActivateMenuWidget = nullptr;
 		}
 	}
+
+	Widget->OnHide();
 }
 
 int AMatrixHUD::BackMenu()

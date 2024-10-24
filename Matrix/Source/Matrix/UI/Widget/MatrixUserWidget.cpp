@@ -3,3 +3,10 @@
 
 #include "UI/Widget/MatrixUserWidget.h"
 
+void UMatrixUserWidget::OnShow_Implementation()
+{
+}
+
+void UMatrixUserWidget::OnHide_Implementation()
+{
+}

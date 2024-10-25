@@ -24,6 +24,8 @@ ABaseMatrixCharacter::ABaseMatrixCharacter()
 
 	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
 	ItemHold->SetOwnerMesh(GetMesh());
+
+	//스캔 컴포넌트 구조 느낌스로 BGM컴포넌트 구현
 }
 
 void ABaseMatrixCharacter::BeginPlay()

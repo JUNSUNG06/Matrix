@@ -43,4 +43,7 @@ protected:
 	TObjectPtr<class UWidgetComponent> LockOnedWidget;
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UActorWidgetComponent> StunedWidget;
+
+public:
+	virtual void OnSetTarget_Implementation(AActor* PrevTarget, AActor* NewTarget) override;
 };

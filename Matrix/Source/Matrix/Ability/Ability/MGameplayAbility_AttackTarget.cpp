@@ -12,7 +12,7 @@ bool UMGameplayAbility_AttackTarget::CanActivateAbility(const FGameplayAbilitySp
 	ABaseMatrixCharacter* MC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
 	if (!MC)
 		return false;
-	if (!MC->Target)
+	if (!MC->GetTarget())
 		return false;
 
 	return true;
@@ -28,7 +28,7 @@ void UMGameplayAbility_AttackTarget::ActivateAbility(const FGameplayAbilitySpecH
 	if (EffectHandle.IsValid())
 	{
 		FGameplayAbilityTargetData_ActorArray* TargetData = new FGameplayAbilityTargetData_ActorArray();
-		TargetData->SetActors({ OwnerMC->Target });
+		TargetData->SetActors({ OwnerMC->GetTarget()});
 		FGameplayAbilityTargetDataHandle DataHandle(TargetData);
 
 		ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo,

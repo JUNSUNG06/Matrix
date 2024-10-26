@@ -20,9 +20,9 @@ bool UGameplayAbility_ClutchAttack::CanActivateAbility(const FGameplayAbilitySpe
 	ABaseMatrixCharacter* BMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
 	if (!BMC)
 		return false;
-	if (!BMC->Target)
+	if (!BMC->GetTarget())
 		return false;
-	TScriptInterface<IAbilitySystemInterface> TargetASI = BMC->Target;
+	TScriptInterface<IAbilitySystemInterface> TargetASI = BMC->GetTarget();
 	if (!TargetASI)
 		return false;
 
@@ -32,7 +32,7 @@ bool UGameplayAbility_ClutchAttack::CanActivateAbility(const FGameplayAbilitySpe
 void UGameplayAbility_ClutchAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	ABaseMatrixCharacter* BMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
-	TargetActor = BMC->Target;
+	TargetActor = BMC->GetTarget();
 	TScriptInterface<IAbilitySystemInterface> TargetASI = TargetActor;
 
 	FGameplayEventData Payload;

@@ -17,7 +17,7 @@ void UAnimNotify_SetAttackWarpTarget::Notify(USkeletalMeshComponent* MeshComp, U
 		ABaseMatrixCharacter* MC = Cast<ABaseMatrixCharacter>(OwnerActor);
 		if (MC)
 		{
-			AActor* TargetActor = MC->Target;
+			AActor* TargetActor = MC->GetTarget();
 			
 			FVector OwenrToTarget = (TargetActor->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
 			FVector TargetLocation;

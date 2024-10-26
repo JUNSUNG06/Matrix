@@ -27,6 +27,7 @@ enum class EAbilityActivateType : uint8
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActivateAbility, EAbilityActivateType, AbilityActivateType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartBattle);
 
 UCLASS()
 class MATRIX_API ABaseMatrixCharacter : public AMatrixCharacter, public IAbilitySystemInterface, 
@@ -39,6 +40,16 @@ public:
 
 public:
 	virtual void BeginPlay() override;
+
+protected:
+	void StartBattle();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnStartBattle();
+	virtual void OnStartBattle_Implementation();
+
+public:
+	FOnStartBattle OnStartedBattle;
 
 	//GAS
 public:
@@ -109,9 +120,19 @@ public:
 	UFUNCTION()
 	virtual void OnDie();
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+protected:
+	UPROPERTY()
 	AActor* Target;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnSetTarget(AActor* PrevTarget, AActor* NewTarget);
+	virtual void OnSetTarget_Implementation(AActor* PrevTarget, AActor* NewTarget);
+
+public:
+	UFUNCTION(BlueprintCallable)
+	inline AActor* GetTarget() { return Target; }
+	UFUNCTION(BlueprintCallable)
+	void SetTarget(AActor* NewTarget);
 
 	//Utils
 public:

@@ -24,8 +24,6 @@ ABaseMatrixCharacter::ABaseMatrixCharacter()
 
 	ItemHold = CreateDefaultSubobject<UItemHoldComponent>(TEXT("ItemHold"));
 	ItemHold->SetOwnerMesh(GetMesh());
-
-	//½ºÄµ ÄÄÆ÷³ÍÆ® ±¸Á¶ ´À³¦½º·Î BGMÄÄÆ÷³ÍÆ® ±¸Çö
 }
 
 void ABaseMatrixCharacter::BeginPlay()
@@ -50,6 +48,17 @@ void ABaseMatrixCharacter::BeginPlay()
 	{
 		AddAbility(Info);
 	}
+}
+
+void ABaseMatrixCharacter::StartBattle()
+{
+	OnStartBattle();
+
+	OnStartedBattle.Broadcast();
+}
+
+void ABaseMatrixCharacter::OnStartBattle_Implementation()
+{
 }
 
 UAbilitySystemComponent* ABaseMatrixCharacter::GetAbilitySystemComponent() const
@@ -139,4 +148,15 @@ void ABaseMatrixCharacter::OnDamaged(AActor* Attacker, float Damage)
 
 void ABaseMatrixCharacter::OnDie()
 {
+}
+
+void ABaseMatrixCharacter::OnSetTarget_Implementation(AActor* PrevTarget, AActor* NewTarget)
+{
+}
+
+void ABaseMatrixCharacter::SetTarget(AActor* NewTarget)
+{
+	OnSetTarget(Target, NewTarget);
+
+	Target = NewTarget;
 }

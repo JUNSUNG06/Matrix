@@ -51,6 +51,7 @@ protected:
 	UPROPERTY()
 	class APlayerMatrixCharacter* Player;
 
+	UPROPERTY(BlueprintReadOnly)
 	AActor* TargetActor;
 
 private:

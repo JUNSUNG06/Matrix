@@ -96,3 +96,11 @@ void AEnemyMatrixCharacter::OnDie()
 		IGameCycle::Execute_Clear(GetMatrixGameMode());
 	}
 }
+
+void AEnemyMatrixCharacter::OnSetTarget_Implementation(AActor* PrevTarget, AActor* NewTarget)
+{
+	if (!PrevTarget && NewTarget)
+	{
+		StartBattle();
+	}
+}

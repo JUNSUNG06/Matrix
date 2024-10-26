@@ -5,6 +5,7 @@
 
 #include "../UI/Widget/EnemyWidget.h"
 #include "../UI/HUD/MatrixHUD.h"
+#include "../Character/BaseMatrixCharacter.h"
 
 void AMatrixEnemyController::BeginPlay()
 {
@@ -18,5 +19,17 @@ void AMatrixEnemyController::BeginPlay()
 	if (HUD)
 	{
 		HUD->AddWidget(EnemyWidget);
+		HUD->HideWidget(EnemyWidget);
+	}
+
+	GetMatrixCharacter()->OnStartedBattle.AddDynamic(this, &AMatrixEnemyController::OnStartBattle);
+}
+
+void AMatrixEnemyController::OnStartBattle()
+{
+	AMatrixHUD* HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AMatrixHUD>();
+	if (HUD)
+	{
+		HUD->ShowWidget(EnemyWidget);
 	}
 }

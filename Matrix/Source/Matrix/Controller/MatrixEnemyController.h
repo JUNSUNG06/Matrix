@@ -18,9 +18,16 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
+	UFUNCTION()
+	virtual void OnStartBattle();
+
+protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UEnemyWidget> EnemyWidgetClass;
 
 	UPROPERTY()
 	class UEnemyWidget* EnemyWidget;
+
+public:
+	inline class ABaseMatrixCharacter* GetMatrixCharacter() { return Cast<ABaseMatrixCharacter>(GetPawn()); }
 };

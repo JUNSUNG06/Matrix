@@ -60,7 +60,7 @@ void UGameplayAbility_Katana_Attack::CompleteTraceTask(const FGameplayAbilityTar
 			continue;
 		
 		ABaseMatrixCharacter* BMC = Cast<ABaseMatrixCharacter>(GetAvatarActorFromActorInfo());
-		BMC->Target = TargetActor;
+		BMC->SetTarget(TargetActor);
 
 		TScriptInterface<IAbilitySystemInterface> OwnerASI = GetAvatarActorFromActorInfo();
 		FGameplayAbilitySpecHandle AbilityHandle = OwnerASI->GetAbilitySpecHandleByTag(StunClutchAttackTag);

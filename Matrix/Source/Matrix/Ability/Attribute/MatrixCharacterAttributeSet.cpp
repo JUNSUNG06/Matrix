@@ -7,8 +7,8 @@
 #include "../../Tag/MatrixTag.h"
 
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
-	MaxHealth(100.0f),
-	MaxHealthCount(1.0f),
+	MaxHealth(150.0f),
+	MaxHealthCount(2.0f),
 	Damage(0.0f),
 	StunWeightDescAmount(30.0f),
 	StunWeightDescDelay(3.0f)

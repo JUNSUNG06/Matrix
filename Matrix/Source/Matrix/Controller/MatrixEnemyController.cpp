@@ -33,3 +33,8 @@ void AMatrixEnemyController::OnStartBattle()
 		HUD->ShowWidget(EnemyWidget);
 	}
 }
+
+ABaseMatrixCharacter* AMatrixEnemyController::GetMatrixCharacter()
+{
+	return Cast<ABaseMatrixCharacter>(GetPawn());
+}

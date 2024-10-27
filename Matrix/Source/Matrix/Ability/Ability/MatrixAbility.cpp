@@ -23,10 +23,9 @@ bool UMatrixAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 
 void UMatrixAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
 	if (!OwnerMC)
 	{
+		UE_LOG(LogTemp, Log, TEXT("set owner mc"));
 		OwnerMC = Cast<ABaseMatrixCharacter>(ActorInfo->AvatarActor);
 	}
 	
@@ -44,6 +43,8 @@ void UMatrixAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 			}
 		}
 	}
+
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void UMatrixAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)

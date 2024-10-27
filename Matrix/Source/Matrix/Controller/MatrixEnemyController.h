@@ -29,5 +29,5 @@ protected:
 	class UEnemyWidget* EnemyWidget;
 
 public:
-	inline class ABaseMatrixCharacter* GetMatrixCharacter() { return Cast<ABaseMatrixCharacter>(GetPawn()); }
+	class ABaseMatrixCharacter* GetMatrixCharacter();
 };

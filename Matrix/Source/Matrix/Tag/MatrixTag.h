@@ -6,3 +6,4 @@
 #define ABILITY_CHARACTER_PARRIED FGameplayTag::RequestGameplayTag(FName("Ability.Character.Parried"))
 #define ABILITY_CHARACTER_STARTSTUN FGameplayTag::RequestGameplayTag(FName("Ability.Character.StartStun"))
 #define ABILITY_CHARACTER_DIE FGameplayTag::RequestGameplayTag(FName("Ability.Character.Die"))
+#define ABILITY_CHARACTER_DODGE FGameplayTag::RequestGameplayTag(FName("Ability.Character.Dodge"))

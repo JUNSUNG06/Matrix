@@ -3,6 +3,7 @@
 
 #include "Ability/Attribute/MatrixCharacterAttributeSet.h"
 #include "GameplayEffectExtension.h"
+
 #include "../../Tag/MatrixTag.h"
 
 UMatrixCharacterAttributeSet::UMatrixCharacterAttributeSet() :
@@ -97,6 +98,11 @@ bool UMatrixCharacterAttributeSet::PreGameplayEffectExecute(FGameplayEffectModCa
 	if (!Super::PreGameplayEffectExecute(Data))
 		return false; 
 
+	if (GetOwningAbilitySystemComponent()->HasMatchingGameplayTag(ABILITY_CHARACTER_DODGE))
+	{
+		Data.EvaluatedData.Magnitude = 0.0f;
+	}
+
 	return true;
 }
 
@@ -106,6 +112,9 @@ void UMatrixCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffe
 	
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
+		if (Data.EvaluatedData.Magnitude <= 0.0f)
+			return;
+
 		UE_LOG(LogTemp, Log, TEXT("Damaged"));
 		SetHealth(
 			FMath::Clamp(

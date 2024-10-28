@@ -1,5 +1,9 @@
 # Matrix
-![Alt text](./MatrixImage.png)
+![Alt text](./MatrixImage.png)   
+* 기간 : 2024.9.26 ~ 2024.10.28
+* 인원 : 1인
+* 개발 툴, 언어 : Unreal Engine5, C++
+* 플랫폼 : PC
 
 ## 구현 사항
 * Gameplay Ability 플러그인을 활용한 캐릭터 액션 제작

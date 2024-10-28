@@ -1,5 +1,6 @@
 # Matrix
 언리얼 프로젝트
+![Alt text](C:\Users\USER\Desktop\MatrixImage.png)
 
 ## 구현 사항
 * Gameplay Ability 플러그인을 활용한 캐릭터 액션 제작

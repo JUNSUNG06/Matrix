@@ -1,5 +1,4 @@
 # Matrix
-언리얼 프로젝트
 ![Alt text](./MatrixImage.png)
 
 ## 구현 사항
